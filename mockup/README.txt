@@ -1,7 +1,7 @@
  To do:
 
-- Fix sub-pixel rendering issue (absolutes causing trouble)
-  - Have to retain square aspect ratio and scale text
+- ~~Fix sub-pixel rendering issue (absolutes causing trouble)~~
+  - ~~Have to retain square aspect ratio and scale text~~
 - Complete board traversal UI
   - Arrow keys
   - Skip over black cells
