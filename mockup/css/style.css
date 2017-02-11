@@ -1,0 +1,942 @@
+.board {
+  border-radius: 5px;
+  opacity: 0;
+  max-width: 500px;
+  height: 0;
+  padding-bottom: calc(50% - 3px);
+  border: 3px solid #000;
+  margin: 0 auto;
+  overflow: visible;
+}
+.board.board-size-1 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/1);
+  position: relative;
+}
+.board.board-size-1 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/1 - 2px);
+  padding-bottom: calc(100%/1 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-1 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-1 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-1 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-1 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-1 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-1 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-1 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-1 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-1 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-1 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-1 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-1 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-1 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-1 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-1 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/1) - calc(100%/1));
+}
+.board.board-size-2 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/2);
+  position: relative;
+}
+.board.board-size-2 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/2 - 2px);
+  padding-bottom: calc(100%/2 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-2 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-2 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-2 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-2 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-2 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-2 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-2 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-2 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-2 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-2 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-2 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-2 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-2 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-2 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-2 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/2) - calc(100%/2));
+}
+.board.board-size-3 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/3);
+  position: relative;
+}
+.board.board-size-3 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/3 - 2px);
+  padding-bottom: calc(100%/3 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-3 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-3 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-3 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-3 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-3 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-3 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-3 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-3 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-3 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-3 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-3 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-3 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-3 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-3 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-3 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/3) - calc(100%/3));
+}
+.board.board-size-4 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/4);
+  position: relative;
+}
+.board.board-size-4 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/4 - 2px);
+  padding-bottom: calc(100%/4 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-4 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-4 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-4 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-4 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-4 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-4 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-4 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-4 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-4 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-4 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-4 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-4 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-4 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-4 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-4 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/4) - calc(100%/4));
+}
+.board.board-size-5 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/5);
+  position: relative;
+}
+.board.board-size-5 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/5 - 2px);
+  padding-bottom: calc(100%/5 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-5 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-5 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-5 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-5 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-5 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-5 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-5 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-5 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-5 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-5 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-5 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-5 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-5 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-5 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-5 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/5) - calc(100%/5));
+}
+.board.board-size-6 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/6);
+  position: relative;
+}
+.board.board-size-6 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/6 - 2px);
+  padding-bottom: calc(100%/6 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-6 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-6 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-6 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-6 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-6 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-6 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-6 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-6 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-6 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-6 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-6 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-6 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-6 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-6 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-6 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/6) - calc(100%/6));
+}
+.board.board-size-7 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/7);
+  position: relative;
+}
+.board.board-size-7 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/7 - 2px);
+  padding-bottom: calc(100%/7 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-7 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-7 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-7 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-7 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-7 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-7 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-7 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-7 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-7 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-7 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-7 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-7 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-7 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-7 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-7 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/7) - calc(100%/7));
+}
+.board.board-size-8 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/8);
+  position: relative;
+}
+.board.board-size-8 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/8 - 2px);
+  padding-bottom: calc(100%/8 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-8 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-8 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-8 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-8 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-8 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-8 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-8 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-8 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-8 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-8 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-8 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-8 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-8 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-8 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-8 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/8) - calc(100%/8));
+}
+.board.board-size-9 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/9);
+  position: relative;
+}
+.board.board-size-9 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/9 - 2px);
+  padding-bottom: calc(100%/9 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-9 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-9 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-9 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-9 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-9 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-9 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-9 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-9 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-9 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-9 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-9 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-9 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-9 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-9 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-9 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/9) - calc(100%/9));
+}
+.board.board-size-10 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/10);
+  position: relative;
+}
+.board.board-size-10 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/10 - 2px);
+  padding-bottom: calc(100%/10 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-10 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-10 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-10 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-10 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-10 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-10 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-10 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-10 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-10 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-10 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-10 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-10 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-10 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-10 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-10 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/10) - calc(100%/10));
+}
+.board.board-size-11 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/11);
+  position: relative;
+}
+.board.board-size-11 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/11 - 2px);
+  padding-bottom: calc(100%/11 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-11 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-11 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-11 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-11 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-11 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-11 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-11 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-11 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-11 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-11 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-11 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-11 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-11 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-11 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-11 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/11) - calc(100%/11));
+}
+.board.board-size-12 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/12);
+  position: relative;
+}
+.board.board-size-12 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/12 - 2px);
+  padding-bottom: calc(100%/12 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-12 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-12 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-12 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-12 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-12 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-12 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-12 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-12 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-12 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-12 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-12 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-12 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-12 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-12 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-12 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/12) - calc(100%/12));
+}
+.board.board-size-13 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/13);
+  position: relative;
+}
+.board.board-size-13 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/13 - 2px);
+  padding-bottom: calc(100%/13 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-13 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-13 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-13 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-13 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-13 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-13 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-13 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-13 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-13 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-13 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-13 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-13 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-13 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-13 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-13 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/13) - calc(100%/13));
+}
+.board.board-size-14 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/14);
+  position: relative;
+}
+.board.board-size-14 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/14 - 2px);
+  padding-bottom: calc(100%/14 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-14 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-14 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-14 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-14 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-14 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-14 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-14 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-14 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-14 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-14 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-14 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-14 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-14 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-14 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-14 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/14) - calc(100%/14));
+}
+.board.board-size-15 .row {
+  width: 100%;
+  height: 0;
+  padding-bottom: calc(100%/15);
+  position: relative;
+}
+.board.board-size-15 .row .cell {
+  border: 1px solid #aaa;
+  width: calc(100%/15 - 2px);
+  padding-bottom: calc(100%/15 - 2px);
+  float: left;
+  position: absolute;
+  z-index: 20;
+}
+.board.board-size-15 .row .cell:nth-child(1) {
+  left: calc(1 * calc(100%/15) - calc(100%/15));
+}
+.board.board-size-15 .row .cell:nth-child(2) {
+  left: calc(2 * calc(100%/15) - calc(100%/15));
+}
+.board.board-size-15 .row .cell:nth-child(3) {
+  left: calc(3 * calc(100%/15) - calc(100%/15));
+}
+.board.board-size-15 .row .cell:nth-child(4) {
+  left: calc(4 * calc(100%/15) - calc(100%/15));
+}
+.board.board-size-15 .row .cell:nth-child(5) {
+  left: calc(5 * calc(100%/15) - calc(100%/15));
+}
+.board.board-size-15 .row .cell:nth-child(6) {
+  left: calc(6 * calc(100%/15) - calc(100%/15));
+}
+.board.board-size-15 .row .cell:nth-child(7) {
+  left: calc(7 * calc(100%/15) - calc(100%/15));
+}
+.board.board-size-15 .row .cell:nth-child(8) {
+  left: calc(8 * calc(100%/15) - calc(100%/15));
+}
+.board.board-size-15 .row .cell:nth-child(9) {
+  left: calc(9 * calc(100%/15) - calc(100%/15));
+}
+.board.board-size-15 .row .cell:nth-child(10) {
+  left: calc(10 * calc(100%/15) - calc(100%/15));
+}
+.board.board-size-15 .row .cell:nth-child(11) {
+  left: calc(11 * calc(100%/15) - calc(100%/15));
+}
+.board.board-size-15 .row .cell:nth-child(12) {
+  left: calc(12 * calc(100%/15) - calc(100%/15));
+}
+.board.board-size-15 .row .cell:nth-child(13) {
+  left: calc(13 * calc(100%/15) - calc(100%/15));
+}
+.board.board-size-15 .row .cell:nth-child(14) {
+  left: calc(14 * calc(100%/15) - calc(100%/15));
+}
+.board.board-size-15 .row .cell:nth-child(15) {
+  left: calc(15 * calc(100%/15) - calc(100%/15));
+}
+
+.cell.cell--filled {
+  background: #000;
+  border-color: #000 !important;
+  z-index: 100;
+  position: absolute;
+}
+.cell input.cell--text {
+  width: calc(100% - 0px);
+  height: calc(100% - 0px);
+  left: 0px;
+  top: 0px;
+  padding: 0;
+  position: absolute;
+  border: none;
+  text-align: center;
+  font-size: 2.7vw;
+  background: transparent;
+  text-transform: uppercase;
+  z-index: 10;
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
+.cell input.cell--text:focus {
+  box-shadow: 0;
+  outline: none;
+  background: skyblue;
+}
+
+.row:first-child .cell--text {
+  top: 0;
+}
+
+.cell:first-child .cell--text {
+  left: 0;
+}
+.cell:last-child .cell--text {
+  right: 10px;
+}
+
+.clue-number {
+  position: absolute;
+  font-family: monospace;
+  font-size: 10px;
+  left: 1px;
+  z-index: 500;
+}
