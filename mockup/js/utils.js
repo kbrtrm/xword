@@ -48,23 +48,24 @@ const tsv = `1A	BOWS	Yields	H
   let info=document.querySelector('div#info');
 
   //print the board
+  info.innerHTML+=`<h1>Given this TSV:</h1><br />${tsv}<br /><h1>We generate these:</h1><br /`;
   info.innerHTML+=`<h1>Board Array:</h1> <br />${JSON.stringify(board)}<br />`;
-  info.innerHTML+=`<h1>Word Position Dictionary:</h1> <br />${JSON.stringify(wordPosDict)}`;
+  info.innerHTML+=`<h1>Word Position Dictionary:</h1> <br /><pre>${JSON.stringify(wordPosDict,null,'\t')}</pre>`;
   let div=document.querySelector('div#board');
   populateDivWithBoard(div, board, answers=false);
+  let divWithAnswers=document.querySelector('div#boardWithAnswers');
+  populateDivWithBoard(divWithAnswers, board, answers=true);
+
 
   function handleKeyDown(e) {
     let b=e.target.parentNode.style;
-
-    if (((e.shiftKey||e.metaKey)||(e.ctrlKey||e.altKey))||((e.key.length>1)||!(e.key.match(/[A-Z]/gi)))) {
-      return false;
-    }
     if (e.key==='Backspace') {
-      console.log('backspace');
-      console.log(e);
-      console.dir(b);
       b.backgroundColor='';
       return true;
+    }
+    if (((e.shiftKey||e.metaKey)||(e.ctrlKey||e.altKey))||((e.key.length>1)||!(e.key.match(/[A-Z]/gi)))) {
+      //TODO can move this input validation elsewhere probably
+      return false;
     }
     let correct=e.target.parentNode.dataset.text;
     let input=e.key.toUpperCase(); //TODO maybe we should uppercase input by default client-side
@@ -76,21 +77,10 @@ const tsv = `1A	BOWS	Yields	H
 
   let inputs=document.querySelectorAll('input.cell--text');
   inputs.forEach((input)=>input.addEventListener('keydown',handleKeyDown));
-  inputs.forEach((input)=>input.addEventListener('onchange',handleKeyUp));
-  console.log(inputs);
 
   function populatedCell(letter, x, y, printAnswer=false) {
     return (printAnswer) ? `<div class="cell" data-text="${letter}" data-row="${x}" data-col="${y}"><input type="text" maxLength="1" class="cell--text" value="${letter}"/></div>` :
     `<div class="cell" data-text="${letter}" data-row="${x}" data-col="${y}"><input type="text" maxLength="1" class="cell--text" /></div>`;
-  }
-
-  function handleKeyUp(e) {
-    let b=e.target.parentNode.style;
-    console.log(e.target.value);
-    if (e.target.value==='') {
-      b.backgroundColor='';
-      return true;
-    }
   }
 
   function populateDivWithBoard(div, board, answers=false)
@@ -113,7 +103,6 @@ const tsv = `1A	BOWS	Yields	H
   //A thru O maps to 0->14 horizontally
   //numbers map to array rows vertically
   //A.charCodeAt()-65 is 0, O.charCodeAt()-65 is 14.
-
   function letNumToIndex(letNum) { //gives starting index in 2D array to draw word
     let split = letNum.split("");
     let letter, number, index;
@@ -125,7 +114,7 @@ const tsv = `1A	BOWS	Yields	H
 
   function populateBoardArray(board, wordPosDict) { //returns a board populated with words from wordsPosDict
     let clues=document.querySelector('div#clues');
-    clues.innerHTML+=`<b>key | clue | direction (H/V) | word</b><br /><hr />`;
+    clues.innerHTML+=`<b>key | clue | direction (H/V) | word | clue code</b><br /><hr />`;
     Object.keys(wordPosDict).forEach((key)=>
     {
       let index=letNumToIndex(key); //starting array index
@@ -133,7 +122,7 @@ const tsv = `1A	BOWS	Yields	H
       x=index[0];
       y=index[1];
       direction=wordPosDict[key].dir;
-      clues.innerHTML+=`${key} | ${wordPosDict[key].clue} | ${wordPosDict[key].dir} | ${wordPosDict[key].word}<br />`;
+      clues.innerHTML+=`${key} | ${wordPosDict[key].clue} | ${wordPosDict[key].dir} | ${wordPosDict[key].word} | ${wordPosDict[key].clueCode}<br />`;
     wordPosDict[key].word.split("").forEach((letter, index)=>{
       if (direction==='H') { //write to the right hehe
       //leave row (x) fixed and increment col (y) for each letter
@@ -157,6 +146,8 @@ const tsv = `1A	BOWS	Yields	H
       rowItems=rows[i].split("\t"); //split out tab delimited fields
     // a rowItems looks like this 1A 	BOWS	Yields Direction (H horiz, V vertical)
     //                            [0] [1]    [2]    [3]
+    //TODO calculate "pretty print" for key e.g., 3 across based on direction and the first value
+    //e.g., 1F ... H translates into 5 across
       wordPosDict[rowItems[0]]={word:rowItems[1], clue:rowItems[2], dir:rowItems[3]};
     }
     return wordPosDict;
