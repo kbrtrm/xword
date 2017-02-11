@@ -47,6 +47,8 @@ const tsv = `1A	BOWS	Yields	H
   board = populateBoardArray(board,wordPosDict);
   let info=document.querySelector('div#info');
 
+  let secretHashKey='whoaCrazyi12$!@RT#EWAFSZFGREASDFBDABAGDS';
+
   //print the board
   info.innerHTML+=`<h1>Given this TSV:</h1><br />${tsv}<br /><h1>We generate these:</h1><br /`;
   info.innerHTML+=`<h1>Board Array:</h1> <br />${JSON.stringify(board)}<br />`;
@@ -55,7 +57,6 @@ const tsv = `1A	BOWS	Yields	H
   populateDivWithBoard(div, board, answers=false);
   let divWithAnswers=document.querySelector('div#boardWithAnswers');
   populateDivWithBoard(divWithAnswers, board, answers=true);
-
 
   function handleKeyDown(e) {
     let b=e.target.parentNode.style;
@@ -68,7 +69,7 @@ const tsv = `1A	BOWS	Yields	H
       return false;
     }
     let correct=e.target.parentNode.dataset.text;
-    let input=e.key.toUpperCase(); //TODO maybe we should uppercase input by default client-side
+    let input=md5(e.key.toUpperCase(),secretHashKey); //TODO maybe we should uppercase input by default client-side
     if (input.match(/[A-Z]/gi)&&input!=='') {
       (correct===input) ? b.backgroundColor='#ADFF2F' : b.backgroundColor='tomato';
     }
@@ -79,8 +80,9 @@ const tsv = `1A	BOWS	Yields	H
   inputs.forEach((input)=>input.addEventListener('keydown',handleKeyDown));
 
   function populatedCell(letter, x, y, printAnswer=false) {
-    return (printAnswer) ? `<div class="cell" data-text="${letter}" data-row="${x}" data-col="${y}"><input type="text" maxLength="1" class="cell--text" value="${letter}"/></div>` :
-    `<div class="cell" data-text="${letter}" data-row="${x}" data-col="${y}"><input type="text" maxLength="1" class="cell--text" /></div>`;
+    hashVal=md5(letter,secretHashKey);
+    return (printAnswer) ? `<div class="cell" data-text="${hashVal}" data-row="${x}" data-col="${y}"><input type="text" maxLength="1" class="cell--text" value="${letter}"/></div>` :
+    `<div class="cell" data-text="${hashVal}" data-row="${x}" data-col="${y}"><input type="text" maxLength="1" class="cell--text" /></div>`;
   }
 
   function populateDivWithBoard(div, board, answers=false)
