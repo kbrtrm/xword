@@ -36,18 +36,29 @@ const tsv = `1A	BOWS	Yields	H
 15F	EVERT	Upset	H
 15L	EPEE	Small sword	H`;
 
+let secretHashKey='whoaCrazyi12$!@RT#EWAFSZFGREASDFBDABAGDS';
+let indicesToWordKey = {};
+let timeData = {};
+//timeObj contains keys of [row, col] => word index in wordPosDict.
+// we can sum all times for a given key in wordPos dict and then that's the time spent solving that word kinda
   let size = 15;
   let board = [...Array(size).keys()].map(i => Array(size)); //generate empty size x size array
+  let boardState = [...Array(size).keys()].map(i => Array(size)); //generate empty size x size array
   for (var i=0;i<board.length;i++) { //this is ugly and probably better way to do it
     for (var j=0;j<board[i].length;j++) {
       board[i][j]='~'; //placeholder for empty cell
     }
   }
+
   let wordPosDict=tsvToJSON(tsv);
   board = populateBoardArray(board,wordPosDict);
   let info=document.querySelector('div#info');
 
-  let secretHashKey='whoaCrazyi12$!@RT#EWAFSZFGREASDFBDABAGDS';
+  for (var i=0;i<board.length;i++) {
+    for (var j=0;j<board[i].length;j++) {
+      (board[i][j]!=='~') ? boardState[i][j]='' : boardState[i][j]='~';
+      }
+    }
 
   //print the board
   info.innerHTML+=`<h1>Given this TSV:</h1><br />${tsv}<br /><h1>We generate these:</h1><br /`;
@@ -55,12 +66,30 @@ const tsv = `1A	BOWS	Yields	H
   info.innerHTML+=`<h1>Word Position Dictionary:</h1> <br /><pre>${JSON.stringify(wordPosDict,null,'\t')}</pre>`;
   let div=document.querySelector('div#board');
   populateDivWithBoard(div, board, answers=false);
-  let divWithAnswers=document.querySelector('div#boardWithAnswers');
-  populateDivWithBoard(divWithAnswers, board, answers=true);
+
+  let time = new Timer();
+  time.Start();
+  function solveTimer(e) {
+    let timeSpent=time.ProcessTimestamp(e.timeStamp);
+    //save amount of time spent to the word that it was spent on
+    let row=e.target.parentNode.dataset.row;
+    let col=e.target.parentNode.dataset.col;
+    (timeData[indicesToWordKey[`${row},${col}`]]) ? null : timeData[indicesToWordKey[`${row},${col}`]] = [];
+    timeData[indicesToWordKey[`${row},${col}`]].push(timeSpent);
+  }
+
+  function compareBoardState(board,boardState) { //stringify the array and compare strings
+    //TODO I18N?!?
+    return JSON.stringify(board)===JSON.stringify(boardState);
+  }
 
   function handleKeyDown(e) {
+    solveTimer(e);
+    let col = e.target.parentNode.dataset.col;
+    let row = e.target.parentNode.dataset.row;
     let b=e.target.parentNode.style;
     if (e.key==='Backspace') {
+      boardState[row][col]='';
       b.backgroundColor='';
       return true;
     }
@@ -70,24 +99,36 @@ const tsv = `1A	BOWS	Yields	H
     }
     let correct=e.target.parentNode.dataset.text;
     let input=md5(e.key.toUpperCase(),secretHashKey); //TODO maybe we should uppercase input by default client-side
+    boardState[row][col] = input;
     if (input.match(/[A-Z]/gi)&&input!=='') {
       (correct===input) ? b.backgroundColor='#ADFF2F' : b.backgroundColor='tomato';
     }
-    console.log(e.target.parentNode.dataset);
+    if (compareBoardState(board,boardState)) { //the board is over we're done
+      time.Stop();
+      inputs.forEach((input)=>{
+        input.removeEventListener('keydown',handleKeyDown);
+        input.disabled=true;
+      });
+        let stats=document.querySelector('div#boardStats');
+        stats.innerHTML=`<h1>Board Statistics:</h1><br /><b>WORD | TIME SPENT SOLVING (seconds) | Normalized time (time/#letters)</b><br />`;
+        Object.keys(timeData).forEach((key)=>{
+          let timeSpent=(timeData[key].reduce((a,b)=>(a+b),0)/1000).toFixed(3);
+          let normalized=(timeSpent/key.length).toFixed(3);
+          stats.innerHTML+=`<b>${key}:</b> | ${timeSpent} | ${normalized}<br />`;
+        });
+      }
   }
 
   let inputs=document.querySelectorAll('input.cell--text');
   inputs.forEach((input)=>input.addEventListener('keydown',handleKeyDown));
 
   function populatedCell(letter, x, y, printAnswer=false) {
-    hashVal=md5(letter,secretHashKey);
-    return (printAnswer) ? `<div class="cell" data-text="${hashVal}" data-row="${x}" data-col="${y}"><input type="text" maxLength="1" class="cell--text" value="${letter}"/></div>` :
-    `<div class="cell" data-text="${hashVal}" data-row="${x}" data-col="${y}"><input type="text" maxLength="1" class="cell--text" /></div>`;
+    return (printAnswer) ? `<div class="cell" data-text="${letter}" data-row="${x}" data-col="${y}"><input type="text" maxLength="1" class="cell--text" value="${letter}"/></div>` :
+    `<div class="cell" data-text="${letter}" data-row="${x}" data-col="${y}"><input type="text" maxLength="1" class="cell--text" /></div>`;
   }
 
   function populateDivWithBoard(div, board, answers=false)
   {
-    console.log('called');
     let rowHTML;
     let blankCell=`<div class="cell cell--filled"></div>`;
     board.forEach((row, x) => {
@@ -128,11 +169,13 @@ const tsv = `1A	BOWS	Yields	H
     wordPosDict[key].word.split("").forEach((letter, index)=>{
       if (direction==='H') { //write to the right hehe
       //leave row (x) fixed and increment col (y) for each letter
-      board[y][x+index] = letter;
+      board[y][x+index] = md5(letter,secretHashKey);
+      indicesToWordKey[`${y},${x+index}`]=wordPosDict[key].word;
         }
       else { //write it down hehe
         //leave col (y) fixed and increment row (x) for each letter
-        board[x+index][y] = letter;
+        board[x+index][y] = md5(letter,secretHashKey);
+        indicesToWordKey[`${x+index},${y}`]=wordPosDict[key].word;
         }
       });
     });
