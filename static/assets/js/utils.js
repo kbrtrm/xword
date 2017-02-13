@@ -1,49 +1,18 @@
 window.onload = function() {
 
-const tsv = `1A	BOWS	Yields	H
-1F	RETIP	Fix a broken cue stick, perhaps	H
-1L	ICON	Religious work of art	H
-2A	ERIE	Northwestern Pennsylvania Tribe	H
-2F	ACOTE	Next to, to Jacques	H
-2L	SHUE	Adventures in Babysitting actress Elizabeth	H
-3A	TAKE	In Bridge, win (a trick)	H
-3F	SHUCK	Denude a cob	H
-3L	LESS	"___ is more"	H
-4A	ALINKTOTHEPAST	An ancient connection?	H
-5E	LEE	Big name in jeans	H
-5J	DUNTS	Dull-sounding blows	H
-6A	SKYWARDSWORD	An implement for stabbing birds?	H
-7A	ACROSS	Puzzle direction	H
-7H	TOGA	Frat chant	H
-7M	SPA	Restful retreat	H
-8A	TALK	It's cheap, idiomatically	H
-8G	DAO	"The Way," To Lao-Tzu	H
-8L	FULL	The result of combining two optomists' glasses	H
-9A	SLY	Cagy	H
-9E	APES	Mimic	H
-9J	ITALIA	Home, to Giuseppe	H
-10D	THEWINDWAKER	He who rouses Aeolus?	H
-11B	FREON	DuPont refrigerant	H
-11I	EOE	Job description acronym	H
-12B	LINKSAWAKENING	The advent of HTML?	H
-13A	WOTD	Email subscription for logophiles? (abbr.)	H
-13F	ACORN	_____ squash	H
-13L	ONIR	Mononymous Indian film director	H
-14A	ASHE	Tennis's Arthur	H
-14F	VIDEO	Audio partner	H
-14L	MENU	Restaurant reading	H
-15A	TSAR	Nicholas was last official one	H
-15F	EVERT	Upset	H
-15L	EPEE	Small sword	H`;
-
+console.log(window.INITIAL_STATE);
+const id = window.INITIAL_STATE.data._id;
+const tsv = window.INITIAL_STATE.data.data[0];
+const BOARDSIZE = window.INITIAL_STATE.data.meta.size;
+const avgSolveTime = window.INITIAL_STATE.data.meta.stats.averageSolveTime;
+const totalSolves = window.INITIAL_STATE.data.meta.stats.totalSolves;
 let secretHashKey='whoaCrazyi12$!@RT#EWAFSZFGREASDFBDABAGDS';
 let indicesToWordKey = {};
 let timeData = {};
 //timeObj contains keys of [row, col] => word index in wordPosDict.
 // we can sum all times for a given key in wordPos dict and then that's the time spent solving that word kinda
-  let size = 15;
-  let board = [...Array(size).keys()].map(i => Array(size)); //generate empty size x size array
-  let boardState = [...Array(size).keys()].map(i => Array(size)); //generate empty size x size array
+  let board = [...Array(BOARDSIZE).keys()].map(i => Array(BOARDSIZE)); //generate empty BOARDSIZE x BOARDSIZE array
+  let boardState = [...Array(BOARDSIZE).keys()].map(i => Array(BOARDSIZE)); //generate empty size x size array
   for (var i=0;i<board.length;i++) { //this is ugly and probably better way to do it
     for (var j=0;j<board[i].length;j++) {
       board[i][j]='~'; //placeholder for empty cell
@@ -104,20 +73,39 @@ let timeData = {};
       (correct===input) ? b.backgroundColor='#ADFF2F' : b.backgroundColor='tomato';
     }
     if (compareBoardState(board,boardState)) { //the board is over we're done
-      time.Stop();
+      let completionTime=time.Stop();
       inputs.forEach((input)=>{
         input.removeEventListener('keydown',handleKeyDown);
         input.disabled=true;
       });
         let stats=document.querySelector('div#boardStats');
+        let storeTimeData={};
         stats.innerHTML=`<h1>Board Statistics:</h1><br /><b>WORD | TIME SPENT SOLVING (seconds) | Normalized time (time/#letters)</b><br />`;
         Object.keys(timeData).forEach((key)=>{
           let timeSpent=(timeData[key].reduce((a,b)=>(a+b),0)/1000).toFixed(3);
           let normalized=(timeSpent/key.length).toFixed(3);
+          storeTimeData[key]={time:timeSpent, norm:normalized};
           stats.innerHTML+=`<b>${key}:</b> | ${timeSpent} | ${normalized}<br />`;
         });
+        postCompletion(completionTime, storeTimeData);
+        //increment stats.totalSolves by one (or set to 1 if it doesn't exist)
+        //re-average averageSolveTime in seconds
       }
   }
+
+  function postCompletion(timeSpent, storeTimeData) {
+    let newAvgSolveTime=(((avgSolveTime*totalSolves)+timeSpent)/(totalSolves+1)).toFixed(3);
+    console.log('newavg',newAvgSolveTime);
+    fetch('/s',{
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    method: "POST",
+    credentials: "include",
+    body: `id=${id}&totalSolves=${totalSolves+1}&averageSolveTime=${newAvgSolveTime}&timeData=${JSON.stringify(storeTimeData)}`
+  });
+}
 
   let inputs=document.querySelectorAll('input.cell--text');
   inputs.forEach((input)=>input.addEventListener('keydown',handleKeyDown));
@@ -130,6 +118,7 @@ let timeData = {};
   function populateDivWithBoard(div, board, answers=false)
   {
     let rowHTML;
+    div.classList.add(`board-size-${BOARDSIZE}`);
     let blankCell=`<div class="cell cell--filled"></div>`;
     board.forEach((row, x) => {
       rowHTML='';

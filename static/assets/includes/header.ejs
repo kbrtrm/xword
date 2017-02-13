@@ -1,0 +1,14 @@
+<nav>
+  <span id="navElement"><a href="/boardlist">crossword list</a></span>
+  <%if (!data.user) {%>
+  <span id="navElement"><a href="/login">login</a></span>
+  <span id="navElement"><a href="/register">register</a></span>
+  <%}%>
+  <%if (data.user) {%>
+  <p><span id="greeting">hello [<%-data.user%>]</span>
+  <span id="navElement"><a href="/new">NEW BOARD</a></span>
+  <span id="navElement"><a href="/mine">MY BOARDS</a></span>
+  <span id="navElement"><a href="/meta">MY SOLVES</a></span>
+  <span id="navElement"><a href="/logout">LOG OUT</a></span></p>
+  <%}%>
+</nav>
