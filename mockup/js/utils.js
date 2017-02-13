@@ -130,11 +130,12 @@ let timeData = {};
   function populateDivWithBoard(div, board, answers=false)
   {
     let rowHTML;
-    let blankCell=`<div class="cell cell--filled"></div>`;
-    board.forEach((row, x) => {
+    // let blankCell=`<div class="cell cell--filled"></div>`;
+    board.forEach((row, x) =>  {
       rowHTML='';
       rowHTML+=`<div class="row">`;
       row.forEach((letter, y) => {
+        let blankCell=`<div class="cell cell--filled" data-row="${x}" data-col="${y}"></div>`;
         (letter==='~') ? rowHTML+=blankCell : rowHTML+=populatedCell(letter,x,y,answers);
       });
       rowHTML+=`</div>`;
