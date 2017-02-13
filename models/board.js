@@ -57,7 +57,6 @@ boardSchema.statics.listAll = function (callback) {
 
 boardSchema.statics.findBoardsByUser = function (user, callback) {
   this.find({'meta.author':user}, function(err,data) {
-    console.log(err, data);
     if(!data) { callback(null); }
     callback(err, data);
   });
@@ -69,14 +68,11 @@ boardSchema.statics.findByTitle = function (title,callback) {
 
 //TODO right now our primary key is title which is bad. Use _id instead and tie to title somehow
 boardSchema.statics.findOrCreate = function(query, callback) {
-  console.log(query);
   let newBoard=new this();
   this.findOne({'meta.title':query.meta.title}, function(err,board) {
-    console.log('board',board);
     if (err) { return callback(err); }
       if (board) { return callback(null,board); }
       else {  //if board does not exist, create board with values
-          console.log('saving new');
           newBoard.meta=query.meta;
           newBoard.data=query.data;
           newBoard.save(callback);

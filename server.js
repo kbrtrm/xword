@@ -83,14 +83,12 @@ app.post('/new', function(req,res) {
 
   Board.findOrCreate(serverObj, function(err, data){
     if (!err) {
-    console.log(data);
     res.redirect(`/b/${data._id}`);}
   });
 });
 
 app.get('/new', function(req,res) {
   let d=new Date();
-  console.log(d);
   let payload={data:'', user:req.session.user};
   res.render('newBoard', {data:payload});
 });
@@ -141,7 +139,6 @@ app.get('/boardlist', function(req,res) { //lists boards with links to them
 app.get('/mine', function(req,res) {
   Board.findBoardsByUser(req.session.user, function(err,data) {
     if(!err) {
-      console.log(data);
       if (data) {
         let payload={data:data, user:req.session.user};
         res.render('boardList',{data:payload});
@@ -155,14 +152,12 @@ app.get('/mine', function(req,res) {
 
 app.post('/s', function(req,res) {
   let b=req.body;
-  console.log(b);
   Board.saveSolveData({id:b.id,totalSolves:b.totalSolves,averageSolveTime:b.averageSolveTime}, function(err,data) {
-    if (!err) { console.log(data); }
+
+
   });
   Meta.saveSolveData({id:b.id, user:req.session.user, solveData:b.timeData}, function(err, data) {
     if (!err) {
-      console.log('meta data',data);  //data.insertedID is Object ID to save in user
-      console.log('solve ID:',data._id);
       User.saveSolveData({username:req.session.user, solveID:data._id}, function(err, data) {
         console.log(err,data);
       });

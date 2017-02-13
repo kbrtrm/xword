@@ -1,6 +1,5 @@
 window.onload = function() {
 
-console.log(window.INITIAL_STATE);
 const id = window.INITIAL_STATE.data._id;
 const tsv = window.INITIAL_STATE.data.data[0];
 const BOARDSIZE = window.INITIAL_STATE.data.meta.size;
@@ -88,14 +87,13 @@ let timeData = {};
           stats.innerHTML+=`<b>${key}:</b> | ${timeSpent} | ${normalized}<br />`;
         });
         postCompletion(completionTime, storeTimeData);
-        //increment stats.totalSolves by one (or set to 1 if it doesn't exist)
-        //re-average averageSolveTime in seconds
       }
   }
 
   function postCompletion(timeSpent, storeTimeData) {
+    //increments stats.totalSolves by one (or set to 1 if it doesn't exist)
+    //re-averages averageSolveTime in seconds
     let newAvgSolveTime=(((avgSolveTime*totalSolves)+timeSpent)/(totalSolves+1)).toFixed(3);
-    console.log('newavg',newAvgSolveTime);
     fetch('/s',{
     headers: {
       'Accept': 'application/json',
