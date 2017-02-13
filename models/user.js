@@ -2,7 +2,6 @@ let mongoose = require('mongoose');
 let sha1 = require('sha1');
 let Schema = mongoose.Schema;
 
-//TODO add user info for saved solves
 let userSchema = new Schema({
     username: String,
     password: String,

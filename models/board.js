@@ -1,35 +1,8 @@
-/*on Solve:
-increment board.stats.totalSolves
-recalculate board.stats.averageSolveTime (hours.minutes.seconds)
-update board.stats.userRatedQuality and board.stats.userRatedDifficulty if necessary
-
-meta: {
-    "language": "en", //ISO 639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-    "title": "Double Vision",
-    "author": "Chris Word",
-    "dateCreated": 20170210,
-    "description": "You may bee seeing twiice byy thee ennd of thiis puzzle",
-    "size": 12
-    "stats": {
-      "totalSolves": 123,
-      "averageSolveTime": 30 //in seconds
-      "userRatedQuality": [3,4,5,4,4,3,4,5],
-      "userRatedDifficulty": [0,1,1,2,1,0,0,2]
-      },
-data: {
-  ["15L": {
-    "word": "EPEE",
-    "clue": "Small sword",
-    "dir": "H"
-  }]
-} */
-
 let mongoose = require('mongoose');
 let sha1 = require('sha1');
 let Schema = mongoose.Schema;
 
 let boardSchema = new Schema({
-  id: String, //TODO implement this or just use ObjectID
   meta: {
     title: String,
     author: String,
