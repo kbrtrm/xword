@@ -75,12 +75,12 @@ function auth(req,res,next) { //req.sessionStore req.sessionID req.session
  /* --- END OF AUTHENTICATION: Login & Registration --- */
 
 app.post('/new', function(req,res) {
-  let r=req.body;
+  let r=JSON.parse(req.body.meta);
   let serverObj = {};
   serverObj.meta={title:r.title, author:r.author, description: r.description, size: r.size, dateCreated:new Date(),
     stats:{totalSolves:0, averageSolveTime:0}};
-  serverObj.data=r.tsv;
-  Board.findOrCreate(serverObj, function(err, data){
+  serverObj.data=JSON.parse(req.body.board);
+  Board.create(serverObj, function(err, data){
     if (!err) {
     res.redirect(`/b/${data._id}`);}
   });
@@ -91,6 +91,17 @@ app.get('/new', auth, function(req,res) {
   res.render('newBoard', {data:payload});
 });
 
+app.get('/n/', function(req,res) {
+  let payload={data:'', user:req.session.user};
+  res.render('newBoard', {data:payload});
+});
+
+app.get('/n/:size', auth, function(req,res) {
+  if(req.params.size.match(/[^0-9]/)) { res.redirect('/n'); return false;}
+  let payload={data:{size:req.params.size}, user:req.session.user};
+  res.render('prettyNew', {data:payload});
+});
+
 app.get('/b/:board', function(req,res) {
   let board = fetchBoard(req.params.board);
   board.then(function(data) {
@@ -99,7 +110,7 @@ app.get('/b/:board', function(req,res) {
   });
 });
 
-app.get('/boardlist', function(req,res) { //lists boards with links to them
+app.get('/boardlist', function(req,res) {
   Board.listAll(function(err, data) {
     if (!err) {
       let payload={data:data, user:req.session.user};
@@ -126,10 +137,9 @@ app.post('/s', function(req,res) {
   let b=req.body;
   Board.saveSolveData({id:b.id,totalSolves:b.totalSolves,averageSolveTime:b.averageSolveTime}, function(err,data) {
   });
-  Meta.saveSolveData({id:b.id, user:req.session.user, solveData:b.timeData}, function(err, data) {
+  Meta.saveSolveData({id:b.id, title:b.title, user:req.session.user, solveData:b.timeData}, function(err, data) {
     if (!err) {
       User.saveSolveData({username:req.session.user, solveID:data._id}, function(err, data) {
-        console.log(err,data);
       });
     }
   });
@@ -163,6 +173,7 @@ app.get('/meta', auth, function(req,res) {
    else {
    return new Promise(function(resolve, reject) {
      //TODO handle conflicts of boards with the same title
+     //might want to remove altogether. No conflicts on saving with same title because we use OBJECT ID there
      //findOne for multiple results returns the most recent match ordered by insertion time
      Board.findByTitle(title,function(err,data) {
        if (err) { reject(err); }

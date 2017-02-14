@@ -2,25 +2,21 @@
 <head>
   <title>Register</title>
   <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/ejs.css">
+  <link rel="stylesheet" href="/assets/css/clueMaker.css">
   <script>window.INITIAL_STATE = <%-JSON.stringify(data)%>;</script>
 </head>
 <body>
   <% include ../static/assets/includes/header.ejs %>
-  <div id="wholeSize">
-    <div id="box">
-      <div id="boxScreen">
-      <h1>Join Us</h1>
+  <div id="container">
+      <h1>Join us, why dontcha?</h1>
       <h2><%-message%></h2>
       <form action="/register" method="post">
         <input type="text" placeholder="Username" name="username" autofocus required /><br />
         <input type="password" placeholder="Password" name="password" required /><br />
         <input type="submit"><button id="submit">JOIN US</button></input>
       </form>
-      [test/test -> dummy user]<br />
-      <a href="/login">log in</a>
+      <center><a href="/login">log in</a><br />
+      [test/test -> dummy user]</center>
     </div>
-  </div>
-</div>
 </body>
 </html>

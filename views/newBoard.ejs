@@ -2,20 +2,16 @@
 <head>
   <title>Create New Crossword</title>
   <script>window.INITIAL_STATE = <%-JSON.stringify(data)%>;</script>
-  <link rel="stylesheet" href="/assets/css/newBoard.css">
-  <link rel="stylesheet" href="/assets/css/ejs.css">
+  <link rel="stylesheet" href="/assets/css/clueMaker.css">
   <script type="text/javascript" src="/assets/js/newBoard.js"></script>
   </head>
   <body>
     <% include ../static/assets/includes/header.ejs %>
-    <h1>Create New Crossword</h1>
-    <form action="/new" method="POST">
-      <input type="text" name="title" placeholder="Title" autofocus required/><br />
-      <input type="text" name="author" placeholder="Author" required /><br />
-      <input type="text" name="description" placeholder="Description" /><br />
-      Size: <input type="number" name="size" min="1" max="15" required /><br />
-      <textarea name="tsv" placeholder="Tab-Delimited Crossword Data" cols="60" rows="30" required></textarea>
-      <input type="submit"><button id="submit">MAKE IT!</button></input>
-    </form>
+    <div id="container">
+      <h1>Try the new crossword input method! Pick a board size:<br />
+    <% for (var i=1;i<=15;i++) {%>
+      <a href="/n/<%-i%>"><%-i%></a>&nbsp;
+        <%}%></h1><br />
+      </div>
   </body>
   </html>

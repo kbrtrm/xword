@@ -1,8 +1,8 @@
 window.onload = function() {
-
 const id = window.INITIAL_STATE.data._id;
 const tsv = window.INITIAL_STATE.data.data[0];
 const BOARDSIZE = window.INITIAL_STATE.data.meta.size;
+const TITLE = window.INITIAL_STATE.data.meta.title;
 const avgSolveTime = window.INITIAL_STATE.data.meta.stats.averageSolveTime;
 const totalSolves = window.INITIAL_STATE.data.meta.stats.totalSolves;
 let secretHashKey='whoaCrazyi12$!@RT#EWAFSZFGREASDFBDABAGDS';
@@ -18,20 +18,15 @@ let timeData = {};
     }
   }
 
-  let wordPosDict=tsvToJSON(tsv);
-  board = populateBoardArray(board,wordPosDict);
-  let info=document.querySelector('div#info');
-
   for (var i=0;i<board.length;i++) {
     for (var j=0;j<board[i].length;j++) {
       (board[i][j]!=='~') ? boardState[i][j]='' : boardState[i][j]='~';
       }
     }
 
-  //print the board
-  info.innerHTML+=`<h1>Given this TSV:</h1><br />${tsv}<br /><h1>We generate these:</h1><br /`;
-  info.innerHTML+=`<h1>Board Array:</h1> <br />${JSON.stringify(board)}<br />`;
-  info.innerHTML+=`<h1>Word Position Dictionary:</h1> <br /><pre>${JSON.stringify(wordPosDict,null,'\t')}</pre>`;
+  let wordPosDict;
+  (typeof(tsv)==='string') ? wordPosDict=tsvToJSON(tsv) : wordPosDict=tsv; //backwards compatability with feeding in a tsv
+  board = populateBoardArray(board,wordPosDict);
   let div=document.querySelector('div#board');
   populateDivWithBoard(div, board, answers=false);
 
@@ -101,7 +96,7 @@ let timeData = {};
     },
     method: "POST",
     credentials: "include",
-    body: `id=${id}&totalSolves=${totalSolves+1}&averageSolveTime=${newAvgSolveTime}&timeData=${JSON.stringify(storeTimeData)}`
+    body: `id=${id}&title=${TITLE}&totalSolves=${totalSolves+1}&averageSolveTime=${newAvgSolveTime}&timeData=${JSON.stringify(storeTimeData)}`
   });
 }
 
@@ -143,8 +138,8 @@ let timeData = {};
   }
 
   function populateBoardArray(board, wordPosDict) { //returns a board populated with words from wordsPosDict
-    let clues=document.querySelector('div#clues');
-    clues.innerHTML+=`<b>key | clue | direction (H/V) | word | clue code</b><br /><hr />`;
+    let clues=document.querySelector('div#clueList');
+    clues.innerHTML+=`<b>key | clue | direction (H/V) | word</b><br /><hr />`;
     Object.keys(wordPosDict).forEach((key)=>
     {
       let index=letNumToIndex(key); //starting array index
@@ -152,38 +147,20 @@ let timeData = {};
       x=index[0];
       y=index[1];
       direction=wordPosDict[key].dir;
-      clues.innerHTML+=`${key} | ${wordPosDict[key].clue} | ${wordPosDict[key].dir} | ${wordPosDict[key].word} | ${wordPosDict[key].clueCode}<br />`;
-    wordPosDict[key].word.split("").forEach((letter, index)=>{
+      clues.innerHTML+=`${key} | ${wordPosDict[key].clue} | ${wordPosDict[key].dir} | ${wordPosDict[key].word}<br />`;
+    wordPosDict[key].word.split("").forEach((letter, ind)=>{
       if (direction==='H') { //write to the right hehe
       //leave row (x) fixed and increment col (y) for each letter
-      board[y][x+index] = md5(letter,secretHashKey);
-      indicesToWordKey[`${y},${x+index}`]=wordPosDict[key].word;
+      board[y][x+ind] = md5(letter,secretHashKey);
+      indicesToWordKey[`${y},${x+ind}`]=wordPosDict[key].word;
         }
       else { //write it down hehe
         //leave col (y) fixed and increment row (x) for each letter
-        board[x+index][y] = md5(letter,secretHashKey);
-        indicesToWordKey[`${x+index},${y}`]=wordPosDict[key].word;
+        board[y+ind][x] = md5(letter,secretHashKey);
+        indicesToWordKey[`${y+ind},${x}`]=wordPosDict[key].word;
         }
       });
     });
     return board;
-  }
-
-  function tsvToJSON(tsv) {
-  //tsv to JSON
-    let wordPosDict = {};
-    let rows = tsv.split("\n");
-    for (var i=0;i<rows.length;i++)
-    {
-      //TODO better input validation maybe with a regexp to escape HTML entities or something less hacky
-      rows[i]=rows[i].replace('\r',''); //need to remove the carriage returns added by textarea
-      rowItems=rows[i].split("\t"); //split out tab delimited fields
-    // a rowItems looks like this 1A 	BOWS	Yields Direction (H horiz, V vertical)
-    //                            [0] [1]    [2]    [3]
-    //TODO calculate "pretty print" for key e.g., 3 across based on direction and the first value
-    //e.g., 1F ... H translates into 5 across
-      wordPosDict[rowItems[0]]={word:rowItems[1], clue:rowItems[2], dir:rowItems[3]};
-    }
-    return wordPosDict;
   }
 }

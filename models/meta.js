@@ -4,6 +4,7 @@ let Schema = mongoose.Schema;
 
 let metaSchema = new Schema({
   boardID: {type: mongoose.Schema.Types.ObjectId, ref: 'Board'},
+  boardTitle: String,
   dateSolved: { type: Date, default: Date.now },
   user: String,
   solveData: String
@@ -16,6 +17,7 @@ metaSchema.statics.findById = function (id,callback) {
 metaSchema.statics.saveSolveData = function(info, callback) {
     let newMeta=new this();
     newMeta.boardID=info.id;
+    newMeta.boardTitle=info.title;
     newMeta.user=info.user;
     newMeta.solveData=info.solveData;
     newMeta.save(callback);

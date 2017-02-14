@@ -10,10 +10,8 @@ function boardsize() {
 };
 
 $(document).ready(function() {
-  
   fontsize();
   boardsize();
-
   var clueNo = 0;
 
   $('.cell:not(.cell.cell--filled)').each(function(i) {
@@ -28,8 +26,6 @@ $(document).ready(function() {
       });
     }
   });
-  
-
   $('.board').css('opacity', 1);
 });
 
@@ -50,7 +46,7 @@ function nextCellHasClass(currCell, elClass) {
   };
 }
 
-$(document).keydown(function(e) {
+$('div#board').keydown(function(e) {
   var currentCell = $(document.activeElement);
   switch (e.which) {
     case 37: // left
