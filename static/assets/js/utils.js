@@ -1,58 +1,22 @@
 window.onload = function() {
-
-const tsv = `1A	BOWS	Yields	H
-1F	RETIP	Fix a broken cue stick, perhaps	H
-1L	ICON	Religious work of art	H
-2A	ERIE	Northwestern Pennsylvania Tribe	H
-2F	ACOTE	Next to, to Jacques	H
-2L	SHUE	Adventures in Babysitting actress Elizabeth	H
-3A	TAKE	In Bridge, win (a trick)	H
-3F	SHUCK	Denude a cob	H
-3L	LESS	"___ is more"	H
-4A	ALINKTOTHEPAST	An ancient connection?	H
-5E	LEE	Big name in jeans	H
-5J	DUNTS	Dull-sounding blows	H
-6A	SKYWARDSWORD	An implement for stabbing birds?	H
-7A	ACROSS	Puzzle direction	H
-7H	TOGA	Frat chant	H
-7M	SPA	Restful retreat	H
-8A	TALK	It's cheap, idiomatically	H
-8G	DAO	"The Way," To Lao-Tzu	H
-8L	FULL	The result of combining two optomists' glasses	H
-9A	SLY	Cagy	H
-9E	APES	Mimic	H
-9J	ITALIA	Home, to Giuseppe	H
-10D	THEWINDWAKER	He who rouses Aeolus?	H
-11B	FREON	DuPont refrigerant	H
-11I	EOE	Job description acronym	H
-12B	LINKSAWAKENING	The advent of HTML?	H
-13A	WOTD	Email subscription for logophiles? (abbr.)	H
-13F	ACORN	_____ squash	H
-13L	ONIR	Mononymous Indian film director	H
-14A	ASHE	Tennis's Arthur	H
-14F	VIDEO	Audio partner	H
-14L	MENU	Restaurant reading	H
-15A	TSAR	Nicholas was last official one	H
-15F	EVERT	Upset	H
-15L	EPEE	Small sword	H`;
-
+const id = window.INITIAL_STATE.data._id;
+const tsv = window.INITIAL_STATE.data.data[0];
+const BOARDSIZE = window.INITIAL_STATE.data.meta.size;
+const TITLE = window.INITIAL_STATE.data.meta.title;
+const avgSolveTime = window.INITIAL_STATE.data.meta.stats.averageSolveTime;
+const totalSolves = window.INITIAL_STATE.data.meta.stats.totalSolves;
 let secretHashKey='whoaCrazyi12$!@RT#EWAFSZFGREASDFBDABAGDS';
 let indicesToWordKey = {};
 let timeData = {};
 //timeObj contains keys of [row, col] => word index in wordPosDict.
 // we can sum all times for a given key in wordPos dict and then that's the time spent solving that word kinda
-  let size = 15;
-  let board = [...Array(size).keys()].map(i => Array(size)); //generate empty size x size array
-  let boardState = [...Array(size).keys()].map(i => Array(size)); //generate empty size x size array
+  let board = [...Array(BOARDSIZE).keys()].map(i => Array(BOARDSIZE)); //generate empty BOARDSIZE x BOARDSIZE array
+  let boardState = [...Array(BOARDSIZE).keys()].map(i => Array(BOARDSIZE)); //generate empty size x size array
   for (var i=0;i<board.length;i++) { //this is ugly and probably better way to do it
     for (var j=0;j<board[i].length;j++) {
       board[i][j]='~'; //placeholder for empty cell
     }
   }
-
-  let wordPosDict=tsvToJSON(tsv);
-  board = populateBoardArray(board,wordPosDict);
-  let info=document.querySelector('div#info');
 
   for (var i=0;i<board.length;i++) {
     for (var j=0;j<board[i].length;j++) {
@@ -60,12 +24,13 @@ let timeData = {};
       }
     }
 
-  //print the board
-  info.innerHTML+=`<h1>Given this TSV:</h1><br />${tsv}<br /><h1>We generate these:</h1><br /`;
-  info.innerHTML+=`<h1>Board Array:</h1> <br />${JSON.stringify(board)}<br />`;
-  info.innerHTML+=`<h1>Word Position Dictionary:</h1> <br /><pre>${JSON.stringify(wordPosDict,null,'\t')}</pre>`;
+  let wordPosDict;
+  (typeof(tsv)==='string') ? wordPosDict=tsvToJSON(tsv) : wordPosDict=tsv; //backwards compatability with feeding in a tsv
+  board = populateBoardArray(board,wordPosDict);
   let div=document.querySelector('div#board');
   populateDivWithBoard(div, board, answers=false);
+  console.log(board);
+  console.log(wordPosDict);
 
   let time = new Timer();
   time.Start();
@@ -98,26 +63,45 @@ let timeData = {};
       return false;
     }
     let correct=e.target.parentNode.dataset.text;
-    let input=md5(e.key.toUpperCase(),secretHashKey); //TODO maybe we should uppercase input by default client-side
+    let input=e.key.toUpperCase();//md5(e.key.toUpperCase(),secretHashKey); //TODO maybe we should uppercase input by default client-side
     boardState[row][col] = input;
+    console.log(boardState);
     if (input.match(/[A-Z]/gi)&&input!=='') {
       (correct===input) ? b.backgroundColor='#ADFF2F' : b.backgroundColor='tomato';
     }
     if (compareBoardState(board,boardState)) { //the board is over we're done
-      time.Stop();
+      let completionTime=time.Stop();
       inputs.forEach((input)=>{
         input.removeEventListener('keydown',handleKeyDown);
         input.disabled=true;
       });
         let stats=document.querySelector('div#boardStats');
+        let storeTimeData={};
         stats.innerHTML=`<h1>Board Statistics:</h1><br /><b>WORD | TIME SPENT SOLVING (seconds) | Normalized time (time/#letters)</b><br />`;
         Object.keys(timeData).forEach((key)=>{
           let timeSpent=(timeData[key].reduce((a,b)=>(a+b),0)/1000).toFixed(3);
           let normalized=(timeSpent/key.length).toFixed(3);
+          storeTimeData[key]={time:timeSpent, norm:normalized};
           stats.innerHTML+=`<b>${key}:</b> | ${timeSpent} | ${normalized}<br />`;
         });
+        postCompletion(completionTime, storeTimeData);
       }
   }
+
+  function postCompletion(timeSpent, storeTimeData) {
+    //increments stats.totalSolves by one (or set to 1 if it doesn't exist)
+    //re-averages averageSolveTime in seconds
+    let newAvgSolveTime=(((avgSolveTime*totalSolves)+timeSpent)/(totalSolves+1)).toFixed(3);
+    fetch('/s',{
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    method: "POST",
+    credentials: "include",
+    body: `id=${id}&title=${TITLE}&totalSolves=${totalSolves+1}&averageSolveTime=${newAvgSolveTime}&timeData=${JSON.stringify(storeTimeData)}`
+  });
+}
 
   let inputs=document.querySelectorAll('input.cell--text');
   inputs.forEach((input)=>input.addEventListener('keydown',handleKeyDown));
@@ -130,12 +114,12 @@ let timeData = {};
   function populateDivWithBoard(div, board, answers=false)
   {
     let rowHTML;
-    // let blankCell=`<div class="cell cell--filled"></div>`;
-    board.forEach((row, x) =>  {
+    div.classList.add(`board-size-${BOARDSIZE}`);
+    let blankCell=`<div class="cell cell--filled"></div>`;
+    board.forEach((row, x) => {
       rowHTML='';
       rowHTML+=`<div class="row">`;
       row.forEach((letter, y) => {
-        let blankCell=`<div class="cell cell--filled" data-row="${x}" data-col="${y}"></div>`;
         (letter==='~') ? rowHTML+=blankCell : rowHTML+=populatedCell(letter,x,y,answers);
       });
       rowHTML+=`</div>`;
@@ -157,8 +141,8 @@ let timeData = {};
   }
 
   function populateBoardArray(board, wordPosDict) { //returns a board populated with words from wordsPosDict
-    let clues=document.querySelector('div#clues');
-    clues.innerHTML+=`<b>key | clue | direction (H/V) | word | clue code</b><br /><hr />`;
+    let clues=document.querySelector('div#clueList');
+    clues.innerHTML+=`<b>key | clue | direction (H/V) | word</b><br /><hr />`;
     Object.keys(wordPosDict).forEach((key)=>
     {
       let index=letNumToIndex(key); //starting array index
@@ -166,38 +150,20 @@ let timeData = {};
       x=index[0];
       y=index[1];
       direction=wordPosDict[key].dir;
-      clues.innerHTML+=`${key} | ${wordPosDict[key].clue} | ${wordPosDict[key].dir} | ${wordPosDict[key].word} | ${wordPosDict[key].clueCode}<br />`;
-    wordPosDict[key].word.split("").forEach((letter, index)=>{
+      clues.innerHTML+=`${key} | ${wordPosDict[key].clue} | ${wordPosDict[key].dir} | ${wordPosDict[key].word}<br />`;
+    wordPosDict[key].word.split("").forEach((letter, ind)=>{
       if (direction==='H') { //write to the right hehe
       //leave row (x) fixed and increment col (y) for each letter
-      board[y][x+index] = md5(letter,secretHashKey);
-      indicesToWordKey[`${y},${x+index}`]=wordPosDict[key].word;
+      board[y][x+ind] = letter.toUpperCase();//md5(letter,secretHashKey);
+      indicesToWordKey[`${y},${x+ind}`]=wordPosDict[key].word;
         }
       else { //write it down hehe
         //leave col (y) fixed and increment row (x) for each letter
-        board[x+index][y] = md5(letter,secretHashKey);
-        indicesToWordKey[`${x+index},${y}`]=wordPosDict[key].word;
+        board[y+ind][x] = letter.toUpperCase();//md5(letter,secretHashKey);
+        indicesToWordKey[`${y+ind},${x}`]=wordPosDict[key].word;
         }
       });
     });
     return board;
-  }
-
-  function tsvToJSON(tsv) {
-  //tsv to JSON
-    let wordPosDict = {};
-    let rows = tsv.split("\n");
-    for (var i=0;i<rows.length;i++)
-    {
-      //TODO better input validation maybe with a regexp to escape HTML entities or something less hacky
-      rows[i]=rows[i].replace('\r',''); //need to remove the carriage returns added by textarea
-      rowItems=rows[i].split("\t"); //split out tab delimited fields
-    // a rowItems looks like this 1A 	BOWS	Yields Direction (H horiz, V vertical)
-    //                            [0] [1]    [2]    [3]
-    //TODO calculate "pretty print" for key e.g., 3 across based on direction and the first value
-    //e.g., 1F ... H translates into 5 across
-      wordPosDict[rowItems[0]]={word:rowItems[1], clue:rowItems[2], dir:rowItems[3]};
-    }
-    return wordPosDict;
   }
 }

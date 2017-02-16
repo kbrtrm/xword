@@ -64,5 +64,5 @@ Timer.prototype.Stop = function () {
   let solveTime=this.keyPressIntervals.filter((i)=>i/1000<timeout);
   solveTime=solveTime.reduce((a,b)=>(a+b),0);
   this.Display(`Puzzle solved in ${(solveTime/1000).toFixed(2)} seconds!`);
-  console.log(solveTime); //return solveTime/1000;
+  return solveTime/1000;
 }

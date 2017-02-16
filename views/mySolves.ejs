@@ -1,0 +1,18 @@
+<html>
+<head>
+  <title>my puzzle solves</title>
+  <script>window.INITIAL_STATE = <%-JSON.stringify(data)%>;</script>
+  <link rel="stylesheet" href="/assets/css/clueMaker.css">
+  </head>
+  <body>
+    <% include ../static/assets/includes/header.ejs %>
+    <div id="wrapper">
+      <p><h1>MY SOLVES!</h1></p>
+      <%let s=data.data.solves; s.reverse(); s.forEach((solve)=>{%>
+        <p><h1><a href="/b/<%-solve.boardID%>"><%-solve.boardTitle%></a></h1><br />
+        Solved on: <%-solve.dateSolved%><br />
+        <div id="solves"><pre><%-JSON.stringify(JSON.parse(solve.solveData),null,2)%></pre></div></p>
+        <%});%>
+    </div>
+  </body>
+  </html>

@@ -1,0 +1,45 @@
+<html>
+<head>
+  <title>Word solver</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/clueMaker.css">
+  <script>window.INITIAL_STATE = <%-JSON.stringify(data)%>;</script>
+</head>
+<body>
+  <% include ../static/assets/includes/header.ejs %>
+  <div id="container">
+      <h1>Enter a word with stars for wildcards, e.g., a****** and get all the words in the dictionary that match.</h1>
+      <form action="/solve" method="post">
+        <input type="text" placeholder="a*****" name="word" autofocus required /><br />
+      </form><br />
+      We search our 172,820 word list.<br />
+      <b>num letters: num words</b><br />
+      two: 96 <br />
+      three: 972 <br />
+      five: 8636 <br />
+      six: 15232 <br />
+      four: 3903 <br />
+      eight: 28420 <br />
+      nine: 24873 <br />
+      ten: 20300 <br />
+      seven: 23109 <br />
+      eleven: 15504 <br />
+      twelve: 11357 <br />
+      thirteen: 7827 <br />
+      fourteen: 5127 <br />
+      sixteen: 1943 <br />
+      eighteen: 594 <br />
+      fifteen: 3192 <br />
+      seventeen: 1127 <br />
+      nineteen: 329 <br />
+      twenty: 160 <br />
+      twentyone: 62 <br />
+      twentytwo: 30 <br />
+      twentythree: 13 <br />
+      twentyfour: 9 <br />
+      twentyseven: 2 <br />
+      twentyeight: 1 <br />
+      twentyfive: 2 <br />
+    </div>
+</body>
+</html>

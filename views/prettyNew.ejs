@@ -1,0 +1,24 @@
+<html>
+<head>
+  <title>Create New Crossword</title>
+  <script>window.INITIAL_STATE = <%-JSON.stringify(data)%>;</script>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/clueMaker.css">
+  <script type="text/javascript" src="/assets/js/newBoard.js"></script>
+  </head>
+  <body>
+    <% include ../static/assets/includes/header.ejs %>
+    Try another size <b>(danger: resets current board!)</b> <% for (var i=1;i<=15;i++) {%>
+      <a href="/n/<%-i%>"><%-i%></a>&nbsp;
+        <%}%></h1><br />
+        Press <b>SPACEBAR</b> when you are done typing in your words to enter clues. Empty cells will be set to black squares automatically.<br />
+        <b>Shift+CLICK</b>-ing on a cell toggles black squares. We assume a word must be at least two letters for auto-recognition.<br />
+    <div class="board" id="board"></div>
+    <form action="/test" method="POST" id="new">
+      <div id="clues"></div>
+      <div id="submitClues"><input type="submit" id="clueSubmit"><button id="submitClues">SUBMIT CLUES</button></input></div>
+    </form>
+    <script src='/assets/js/jquery-3.1.1.slim.min.js'></script>
+    <script src="/assets/js/index.js"></script>
+  </body>
+  </html>

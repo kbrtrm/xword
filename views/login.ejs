@@ -1,0 +1,22 @@
+<html>
+<head>
+  <title>LOGIN</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/clueMaker.css">
+  <script>window.INITIAL_STATE = <%-JSON.stringify(data)%>;</script>
+</head>
+<body>
+  <% include ../static/assets/includes/header.ejs %>
+  <div id="container">
+        <h1>Welcome back, friend.</h1>
+        <h2><%-message%></h2>
+        <form action="/login" method="post">
+          <input type="text" placeholder="Username" name="username" autofocus required /><br />
+          <input type="password" placeholder="Password" name="password" required /><br />
+          <input type="submit"><button id="submit">COME IN</button></input>
+        </form>
+        <center><a href="/register">register</a><br />
+        [test/test -> dummy user]</center>
+</div>
+</body>
+</html>
