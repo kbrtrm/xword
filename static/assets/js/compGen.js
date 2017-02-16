@@ -127,7 +127,7 @@ window.onload = function() {
     m.forEach((piece)=>{
       meta[piece.name]=piece.value;
     });
-    meta.size=size;
+    meta.size=SIZE;
     postNewBoard(wordPosDict,meta);
   }
 
