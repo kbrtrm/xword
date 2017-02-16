@@ -8,10 +8,15 @@
   <body>
     <% include ../static/assets/includes/header.ejs %>
     <div id="container">
-      <h1>Try the new crossword input method! Pick a board size:<br />
+      <p><h1>Try the new crossword input method! Pick a board size:<br />
     <% for (var i=1;i<=15;i++) {%>
       <a href="/n/<%-i%>"><%-i%></a>&nbsp;
-        <%}%></h1><br />
+        <%}%></h1></p>
+        <hr />
+        <p><h1>Try the new <b>super beta</b> computerized generation! Pick a board size:<br />
+      <% for (var i=1;i<=15;i++) {%>
+        <a href="/c/<%-i%>"><%-i%></a>&nbsp;
+          <%}%></h1></p>
       </div>
   </body>
   </html>

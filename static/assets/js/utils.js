@@ -29,6 +29,8 @@ let timeData = {};
   board = populateBoardArray(board,wordPosDict);
   let div=document.querySelector('div#board');
   populateDivWithBoard(div, board, answers=false);
+  console.log(board);
+  console.log(wordPosDict);
 
   let time = new Timer();
   time.Start();
@@ -61,8 +63,9 @@ let timeData = {};
       return false;
     }
     let correct=e.target.parentNode.dataset.text;
-    let input=md5(e.key.toUpperCase(),secretHashKey); //TODO maybe we should uppercase input by default client-side
+    let input=e.key.toUpperCase();//md5(e.key.toUpperCase(),secretHashKey); //TODO maybe we should uppercase input by default client-side
     boardState[row][col] = input;
+    console.log(boardState);
     if (input.match(/[A-Z]/gi)&&input!=='') {
       (correct===input) ? b.backgroundColor='#ADFF2F' : b.backgroundColor='tomato';
     }
@@ -151,12 +154,12 @@ let timeData = {};
     wordPosDict[key].word.split("").forEach((letter, ind)=>{
       if (direction==='H') { //write to the right hehe
       //leave row (x) fixed and increment col (y) for each letter
-      board[y][x+ind] = md5(letter,secretHashKey);
+      board[y][x+ind] = letter.toUpperCase();//md5(letter,secretHashKey);
       indicesToWordKey[`${y},${x+ind}`]=wordPosDict[key].word;
         }
       else { //write it down hehe
         //leave col (y) fixed and increment row (x) for each letter
-        board[y+ind][x] = md5(letter,secretHashKey);
+        board[y+ind][x] = letter.toUpperCase();//md5(letter,secretHashKey);
         indicesToWordKey[`${y+ind},${x}`]=wordPosDict[key].word;
         }
       });

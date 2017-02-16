@@ -1,10 +1,11 @@
 window.onload = function() {
-  let COMPFILL=true;
   let div=document.querySelector('div#board');
   let wordPosDict = {};
   let board;
   let boardState;
-  const size = Math.max(Math.min(window.INITIAL_STATE.data.size,15),1);
+  let secretHashKey='whoaCrazyi12$!@RT#EWAFSZFGREASDFBDABAGDS';
+  let indicesToWordKey = {};
+  const SIZE = Math.max(Math.min(window.INITIAL_STATE.data.size,15),1);
 
   function createBoard(board,size) {
     board = [...Array(size).keys()].map(i => Array(size));
@@ -38,7 +39,7 @@ window.onload = function() {
       document.addEventListener('keydown', handleDocKey);
     }
 
-    createSize(size);
+    createSize(SIZE);
 
       function fillEmptyWithBlack(board) {
         for (var i=0;i<board.length;i++) {
@@ -53,14 +54,52 @@ window.onload = function() {
         if (e.code==='Space') {
           let div=document.querySelector('div#board');
           div.innerHTML='';
-          boardState=fillEmptyWithBlack(boardState);
-          generateTheDictionary(boardState);
-          fetchTheClues(wordPosDict);
-          populateDivWithBoard(div, boardState, true);
+          generateTheEmptyDictionary(boardState); //TODO if none of the black squares are selected generate some of your own
+          Object.keys(wordPosDict).forEach((key)=>{
+            wordPosDict[key].index=letNumToIndex(key);
+          });
+          fetchWordsForEmptyDict(wordPosDict, SIZE);
           document.removeEventListener('keydown', handleDocKey);
         }
       }
 
+      function calculateConstraints(wordPosDict) {
+        let cDict = {};
+        let num, dir, split;
+        let keys=Object.keys(wordPosDict);
+        keys.forEach((key) =>{
+          split = key.split("-");
+          num=split[0];
+          dir=split[1];
+          number = key.match(/\d/gi).join(""); //return just the numbers e.g., 11A -> returns 11
+          letter = key.match(/[A-Z]/gi).join(""); //return just the letter e.g., 11A -> returns 'A'
+          conole.log(num,dir);
+          (cDict[num]) ? cDict[num]++ : cDict[num]=1;
+        });
+        return cDict;
+      }
+
+  function fetchWordsForEmptyDict(emptyDict, size) {
+    fetch('/c',{
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    method: "POST",
+    credentials: "include",
+    body: `empty=${JSON.stringify(emptyDict)}&size=${SIZE}`
+  }).then(function(response) {
+  if(response.ok) {
+    return response.json();
+  }}).then(function(json) {
+    wordPosDict=json;
+    populateBoardArray(board,json);
+    populateDivWithBoard(div, board, true);
+    fetchTheClues(json);
+  }).catch(function (err) {
+    console.log("Promise Rejected err: ",err);
+  });
+}
   function fetchTheClues(wordPosDict) {
     let clues=document.querySelector('div#clues');
     clues.style.display='block';
@@ -118,10 +157,11 @@ window.onload = function() {
       return true;
     }
     if (((e.shiftKey||e.metaKey)||(e.ctrlKey||e.altKey))||((e.key.length>1)||!(e.key.match(/[A-Z]/gi)))) {
+      //TODO can move this input validation elsewhere probably
       return false;
     }
     let correct=e.target.parentNode.dataset.text;
-    //let input=md5(e.key.toUpperCase(),secretHashKey);
+    //let input=md5(e.key.toUpperCase(),secretHashKey); //TODO maybe we should uppercase input by default client-side
     let input=e.key.toUpperCase();
     boardState[row][col] = input;
   }
@@ -157,7 +197,6 @@ window.onload = function() {
   {
     div.innerHTML='';
     let rowHTML;
-    // let blankCell=`<div class="cell cell--filled"></div>`;
     board.forEach((row, x) =>  {
       rowHTML='';
       rowHTML+=`<div class="row">`;
@@ -200,32 +239,32 @@ window.onload = function() {
 
   function populateBoardArray(board, wordPosDict) { //returns a board populated with words from wordsPosDict
     let clues=document.querySelector('div#clues');
-    clues.innerHTML+=`<b>key | clue | direction (H/V) | word | clue code</b><br /><hr />`;
+    clues.innerHTML+=`<b>key | clue | direction (H/V) | word</b><br /><hr />`;
     Object.keys(wordPosDict).forEach((key)=>
     {
       let index=letNumToIndex(key); //starting array index
       let x, y, direction;
-      x=index[0];
-      y=index[1];
+      x=Number(index[0]);
+      y=Number(index[1]);
       direction=wordPosDict[key].dir;
-      clues.innerHTML+=`${key} | ${wordPosDict[key].clue} | ${wordPosDict[key].dir} | ${wordPosDict[key].word} | ${wordPosDict[key].clueCode}<br />`;
-    wordPosDict[key].word.split("").forEach((letter, index)=>{
+      clues.innerHTML+=`${key} | ${wordPosDict[key].clue} | ${wordPosDict[key].dir} | ${wordPosDict[key].word}<br />`;
+      wordPosDict[key].word.split("").forEach((letter, index)=>{
       if (direction==='H') { //write to the right hehe
       //leave row (x) fixed and increment col (y) for each letter
-      board[y][x+index] = md5(letter,secretHashKey);
+      board[y][x+index] = letter;
       indicesToWordKey[`${y},${x+index}`]=wordPosDict[key].word;
         }
       else { //write it down hehe
         //leave col (y) fixed and increment row (x) for each letter
-        board[y+index][x] = md5(letter,secretHashKey);
-        indicesToWordKey[`${x+index},${y}`]=wordPosDict[key].word;
+        board[y+index][x] = letter;
+        indicesToWordKey[`${y+index},${x}`]=wordPosDict[key].word;
         }
       });
     });
     return board;
   }
 
-  function generateTheDictionary(testArr) {
+  function generateTheEmptyDictionary(testArr) {
     let currentWordCode;
     let currentWord=[];
     let wordDirection;
@@ -245,11 +284,13 @@ window.onload = function() {
   for (var i=0;i<testArr.length;i++) {
     for (var j=0;j<testArr[i].length;j++) {
       if (!isCellEmpty(testArr[i][j])&&!alreadyUsed[`${i},${j}`]) {
+        currentWordLen=0;
         currentWord=[];
         if ((right(j)&&!isCellEmpty(testArr[i][j+1]))) {
           //the cell to the right is empty and we're not at the right side of the board
           currentWordCode=indexToLetNum(i,j);
           let ct=j;
+          currentWordLen++;
           currentWord.push(testArr[i][ct]);
           alreadyUsed[`${i},${ct}`]=wordDirection;
           wordDirection='H';
@@ -257,6 +298,7 @@ window.onload = function() {
           while (go&&right(ct)) { //go to the right storing letters
             ct++;
             if(!isCellEmpty(testArr[i][ct])) {
+              currentWordLen++;
               currentWord.push(testArr[i][ct]);
               alreadyUsed[`${i},${ct}`]=wordDirection;
               }
@@ -265,7 +307,8 @@ window.onload = function() {
               }
             }
             currentWord=currentWord.join("");
-            dictionize(currentWordCode, currentWord, wordDirection);
+            dictionize(currentWordCode, currentWordLen, currentWord, wordDirection);
+            currentWord=[];
           }
         }
         else { //the cell is empty.
@@ -279,26 +322,29 @@ window.onload = function() {
   for (var i=0;i<testArr.length;i++) {
     for (var j=0;j<testArr[i].length;j++) {
       if (!isCellEmpty(testArr[i][j])&&!alreadyUsed[`${i},${j}`]) {
+        currentWordLen=0;
         currentWord=[];
         if ((up(i)&&isCellEmpty(testArr[i-1][j]))||(!up(i))) { //the cell above us is empty or we're at the top of the board
           //we are at the top of a word, so test if it's vertical or horizontal
           currentWordCode=indexToLetNum(i,j);
           if (down(i)&&!isCellEmpty(testArr[i+1][j])) { //the cell below us is NOT empty, the word is vertical
             let ct=i;
-            currentWord.push(testArr[ct][j]);
+            currentWordLen++;
+            currentWord.push(testArr[i][ct]);
             wordDirection='V';
             alreadyUsed[`${ct},${j}`]=wordDirection;
             let go=true;
             while (down(ct)&&go) { //go down to the bottom storing letters
               ct++;
               if (!isCellEmpty(testArr[ct][j])) {
-                currentWord.push(testArr[ct][j]);
+                currentWordLen++;
+                currentWord.push(testArr[i][ct]);
                 alreadyUsed[`${ct},${j}`]=wordDirection;
               }
               else {go=false;}
             }
             currentWord=currentWord.join("");
-            dictionize(currentWordCode, currentWord, wordDirection);
+            dictionize(currentWordCode, currentWordLen, currentWord, wordDirection);
           }
         }
       }
@@ -318,7 +364,7 @@ window.onload = function() {
   }
 
   function isCellEmpty(cell) {
-    return (cell==='~'||cell==='');
+    return cell==='~'; //removed cell===''
   }
 
   function canLookUp(length) {
@@ -342,8 +388,9 @@ window.onload = function() {
     }
   }
 
-  function dictionize(code, word, direction, clue) {
-    clue=clue||`${word}`;
-    wordPosDict[`${code}-${direction}`] = {word:word,clue:clue,dir:direction};
+  function dictionize(code, wordLength, word, direction) { //TODO make so doesn't record same word for each row multiple times
+    let w;
+    (word.length) ? w=word : w='';
+    wordPosDict[`${code}-${direction}`] = {wordLength:wordLength,word:w,dir:direction};
   }
 }

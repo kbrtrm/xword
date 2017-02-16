@@ -1,0 +1,22 @@
+<html>
+<head>
+  <title>Computer Generated Crossword</title>
+  <script>window.INITIAL_STATE = <%-JSON.stringify(data)%>;</script>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/clueMaker.css">
+  <script type="text/javascript" src="/assets/js/md5min.js"></script>
+  <script type="text/javascript" src="/assets/js/compGen.js"></script>
+  </head>
+  <body>
+    <% include ../static/assets/includes/header.ejs %>
+        <b>Shift+CLICK</b>-ing on a cell toggles black squares. Draw some.<br />
+        Then press <b>SPACEBAR</b> when you are done typing in your words. We'll try to fill in the blanks.<br />
+    <div class="board" id="board"></div>
+    <form action="/test" method="POST" id="new">
+      <div id="clues"></div>
+      <div id="submitClues"><input type="submit" id="clueSubmit"><button id="submitClues">SUBMIT CLUES</button></input></div>
+    </form>
+    <script src='/assets/js/jquery-3.1.1.slim.min.js'></script>
+    <script src="/assets/js/index.js"></script>
+  </body>
+  </html>
