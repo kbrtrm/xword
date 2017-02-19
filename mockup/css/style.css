@@ -271,10 +271,15 @@
   right: 10px;
 }
 
-.clue-number {
+.cluelist--number {
   position: absolute;
   font-family: monospace;
   font-size: 10px;
   left: 1px;
   z-index: 500;
+}
+
+.cluelist--number:after {
+  content: '.';
+  display: block;
 }

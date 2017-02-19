@@ -278,3 +278,18 @@
   left: 1px;
   z-index: 500;
 }
+
+.cluelist {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.cluelist--number {
+    letter-spacing: initial;
+    font-weight: bold;
+}
+
+.cluelist--number:after {
+  content: '.';
+  margin-right: .5em;
+}
