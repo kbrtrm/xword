@@ -115,11 +115,12 @@ let timeData = {};
   {
     let rowHTML;
     div.classList.add(`board-size-${BOARDSIZE}`);
-    let blankCell=`<div class="cell cell--filled"></div>`;
+
     board.forEach((row, x) => {
       rowHTML='';
       rowHTML+=`<div class="row">`;
       row.forEach((letter, y) => {
+        let blankCell=`<div class="cell cell--filled" data-row="${x}" data-col="${y}"></div>`;
         (letter==='~') ? rowHTML+=blankCell : rowHTML+=populatedCell(letter,x,y,answers);
       });
       rowHTML+=`</div>`;
@@ -142,6 +143,36 @@ let timeData = {};
 
   function populateBoardArray(board, wordPosDict) { //returns a board populated with words from wordsPosDict
     let clues=document.querySelector('div#clueList');
+    let acrossList=document.querySelector('ul#acrossList');
+    let downList=document.querySelector('ul#downList');
+    let listClueNum = 0;
+    let prevClueCell = '';
+
+    //ordering wordPosDict so that the items can be iterated over to create across and down lists
+    const orderedWordPosDict = {};
+    Object.keys(wordPosDict).sort().forEach(function(key) {
+      orderedWordPosDict[key] = wordPosDict[key];
+    });
+
+    Object.keys(orderedWordPosDict).forEach((key, i)=>
+    {
+      if (Object.keys(orderedWordPosDict)[i].split('-')[0] == prevClueCell) {
+        prevClueCell = Object.keys(orderedWordPosDict)[i].split('-')[0];
+      } else {
+        listClueNum++;
+        prevClueCell = Object.keys(orderedWordPosDict)[i].split('-')[0];
+      }
+
+      thisClue = '<li><span class="cluelist--number">' + listClueNum + '</span>' + orderedWordPosDict[key].clue + '</li>';
+
+      if (orderedWordPosDict[key].dir === 'H') {
+        acrossList.innerHTML += thisClue;
+      } else {
+        downList.innerHTML += thisClue;
+      }
+
+    });
+
     clues.innerHTML+=`<b>key | clue | direction (H/V) | word</b><br /><hr />`;
     Object.keys(wordPosDict).forEach((key)=>
     {
@@ -150,6 +181,7 @@ let timeData = {};
       x=index[0];
       y=index[1];
       direction=wordPosDict[key].dir;
+
       clues.innerHTML+=`${key} | ${wordPosDict[key].clue} | ${wordPosDict[key].dir} | ${wordPosDict[key].word}<br />`;
     wordPosDict[key].word.split("").forEach((letter, ind)=>{
       if (direction==='H') { //write to the right hehe

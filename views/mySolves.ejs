@@ -2,11 +2,12 @@
 <head>
   <title>my puzzle solves</title>
   <script>window.INITIAL_STATE = <%-JSON.stringify(data)%>;</script>
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="/assets/css/clueMaker.css">
   </head>
   <body>
     <% include ../static/assets/includes/header.ejs %>
-    <div id="wrapper">
+    <div id="wrapper" class="container">
       <p><h1>MY SOLVES!</h1></p>
       <%let s=data.data.solves; s.reverse(); s.forEach((solve)=>{%>
         <p><h1><a href="/b/<%-solve.boardID%>"><%-solve.boardTitle%></a></h1><br />

@@ -1,15 +1,37 @@
-<nav>
-  <span id="navElement"><a href="/boardlist">crossword list</a></span> |
-  <%if (!data.user) {%>
-  <span id="navElement"><a href="/login">login</a></span>
-  <span id="navElement"><a href="/register">register</a></span>
-  <%}%>
-  <%if (data.user) {%>
-  <p><span id="greeting">hello [<%-data.user%>]</span> |
-  <span id="navElement"><a href="/new">NEW BOARD</a></span> |
-  <span id="navElement"><a href="/solve">WORD SOLVER UTILITY</a></span> |
-  <span id="navElement"><a href="/mine">MY BOARDS</a></span> |
-  <span id="navElement"><a href="/meta">MY SOLVES</a></span> |
-  <span id="navElement"><a href="/logout">LOG OUT</a></span></p>
-  <%}%>
-</nav>
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-primary">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="/boardlist">crossword list</a>
+
+    <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav mr-auto">
+        <%if (data.user) {%>
+        <li class="nav-item">
+          <a class="nav-link" href="/new">New Board</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/solve">Word Solver</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/mine">My Boards</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/meta">My Solves</a>
+        </li>
+        <%}%>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Log Out</a>
+        </li>
+        <%if (data.user) {%>
+        <li id="greeting" class="p-2 nav-link">hello [<%-data.user%>]</li>
+        <%}%>
+        <%if (!data.user) {%>
+        <li id="navElement"><a href="/login">login</a></li>
+        <li id="navElement"><a href="/register">register</a></li>
+        <%}%>
+      </ul>
+    </div>
+  </nav>

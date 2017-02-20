@@ -278,3 +278,8 @@
   left: 1px;
   z-index: 500;
 }
+
+.cluelist--number:after {
+  content: '.';
+  display: block;
+}
