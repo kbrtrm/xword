@@ -2,12 +2,13 @@
 <head>
   <title>utils for dev</title>
   <script>window.INITIAL_STATE = <%-JSON.stringify(data)%>;</script>
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/clueMaker.css">
   </head>
   <body>
     <% include ../static/assets/includes/header.ejs %>
-    <div id="wrapper">
+    <div id="wrapper" class="container">
       <p><h1>List of Crosswords! Click names to solve</h1></p>
       <%let x=data.data; x.reverse(); x.forEach((crossword)=>{%>
         <h1><a href="/b/<%-crossword._id%>"><%-crossword.meta.title%></a></h1><br />

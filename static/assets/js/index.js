@@ -1,6 +1,6 @@
 function fontsize() {
   var fontSize = $(".cell").width() * .75;
-  var clueFontSize = $(".cell").width() * .35;
+  var clueFontSize = $(".cell").width() * .3;
   $(".cell--text").css('font-size', fontSize);
   $(".clue-number").css('font-size', clueFontSize);
 };
@@ -188,7 +188,8 @@ jQuery.fn.putCursorAtEnd = function() {
 
 };
 
-$(document).ready(function() {
+setTimeout(function(){
+
   fontsize();
   boardsize();
 
@@ -207,4 +208,4 @@ $(document).ready(function() {
     }
   });
   $('.board').css('opacity', 1);
-});
+},1000);

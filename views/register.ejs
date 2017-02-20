@@ -1,13 +1,14 @@
 <html>
 <head>
   <title>Register</title>
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/clueMaker.css">
   <script>window.INITIAL_STATE = <%-JSON.stringify(data)%>;</script>
 </head>
 <body>
   <% include ../static/assets/includes/header.ejs %>
-  <div id="container">
+  <div class="container">
       <h1>Join us, why dontcha?</h1>
       <h2><%-message%></h2>
       <form action="/register" method="post">

@@ -1,21 +1,14 @@
 body {
-  background: #ECE9E6; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to left, #ECE9E6 , #FFFFFF); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to left, #ECE9E6 , #FFFFFF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  padding: 26px;
-  font-family: 'Helvetica Neue', sans-serif;
-  font-weight: 100;
-  font-size: 1em;
-  letter-spacing: 0.2em;
-}
 
+}
+/*
 h1 {
   font-weight: 100;
   font-size: 1.4em;
   letter-spacing: 0.2em;
-}
+}*/
 
-input {
+/*input {
   padding: 10px;
   outline: none;
   height: 40px;
@@ -26,7 +19,7 @@ input {
 input:focus {
   outline: none;
   border: 2px solid gold;
-}
+}*/
 
 div#clueList {
   padding: 10px;
@@ -60,24 +53,24 @@ div#solves {
 }
 
 
-button {
+/*button {
   width: 300px;
   height: 50px;
   font-size: 1em;
   letter-spacing: 0.8em;
   padding: 10px;
   transition: 300ms all linear;
-}
+}*/
 
-button:hover {
+/*button:hover {
   letter-spacing: 0.5em;
-}
+}*/
 
 div#submitClues {
   display: none;
 }
 
-a {
+/*a {
   color: tomato;
   font-weight: 200;
   text-decoration: none;
@@ -89,9 +82,9 @@ a:hover {
   color: green;
   text-decoration: underline;
   font-style: italic;
-}
+}*/
 
-div#container {
+/*div#container {
   margin: auto;
   width: 300px;
-}
+}*/
