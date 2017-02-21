@@ -41,8 +41,6 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "querystring": "^0.2.0",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
     "sha1": "^1.1.1",
     "webpack": "^2.2.1"
   },
