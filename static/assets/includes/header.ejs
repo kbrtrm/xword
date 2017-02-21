@@ -6,7 +6,7 @@
 
     <div class="collapse navbar-collapse" id="navbarColor02">
       <ul class="navbar-nav mr-auto">
-        <%if (data.user||user) {%>
+        <%if (data.user) {%>
         <li class="nav-item">
           <a class="nav-link" href="/new">New Board</a>
         </li>
@@ -22,13 +22,13 @@
         <%}%>
       </ul>
       <ul class="navbar-nav">
-        <%if (data.user||user) {%>
+        <%if (data.user) {%>
+        <li id="greeting" class="p-2 nav-link">hello [<%-data.user%>]</li>
         <li class="nav-item">
           <a class="nav-link" href="/logout">Log Out</a>
         </li>
-        <li id="greeting" class="p-2 nav-link">hello [<%-data.user||user%>]</li>
         <%}%>
-        <%if (!data.user&&user) {%>
+        <%if (!data.user) {%>
         <li id="navElement"><a href="/login">login</a></li>
         <li id="navElement"><a href="/register">register</a></li>
         <%}%>

@@ -47,7 +47,8 @@ app.set('views', path.join(__dirname+'/views'));
 app.get('/b/:board', function(req,res) {
   let board = fetchBoard(req.params.board);
   board.then(function(data) {
-    res.render('test',{data:data, user:req.session.user});
+    data.user=req.session.user;
+    res.render('test',{data:data});
   });
 });
 
