@@ -10,19 +10,19 @@ let indicesToWordKey = {};
 let timeData = {};
 //timeObj contains keys of [row, col] => word index in wordPosDict.
 // we can sum all times for a given key in wordPos dict and then that's the time spent solving that word kinda
-  let board = [...Array(BOARDSIZE).keys()].map(i => Array(BOARDSIZE)); //generate empty BOARDSIZE x BOARDSIZE array
-  let boardState = [...Array(BOARDSIZE).keys()].map(i => Array(BOARDSIZE)); //generate empty size x size array
-  for (var i=0;i<board.length;i++) { //this is ugly and probably better way to do it
-    for (var j=0;j<board[i].length;j++) {
-      board[i][j]='~'; //placeholder for empty cell
+
+function createEmptyBoard(size) {
+  let b = [...Array(BOARDSIZE).keys()].map(i => Array(BOARDSIZE));
+  for (var i=0;i<b.length;i++) {
+    for (var j=0;j<b[i].length;j++) {
+      b[i][j]='~'; //placeholder for empty cell
     }
   }
+  return b;
+}
 
-  for (var i=0;i<board.length;i++) {
-    for (var j=0;j<board[i].length;j++) {
-      (board[i][j]!=='~') ? boardState[i][j]='' : boardState[i][j]='~';
-      }
-    }
+  let board = createEmptyBoard(BOARDSIZE);
+  let boardState = createEmptyBoard(BOARDSIZE);
 
   let wordPosDict;
   (typeof(tsv)==='string') ? wordPosDict=tsvToJSON(tsv) : wordPosDict=tsv; //backwards compatability with feeding in a tsv
@@ -31,7 +31,7 @@ let timeData = {};
   populateDivWithBoard(div, board, answers=false);
   console.log(board);
   console.log(wordPosDict);
-
+  console.log(boardState);
   let time = new Timer();
   time.Start();
   function solveTimer(e) {

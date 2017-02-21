@@ -188,8 +188,6 @@ jQuery.fn.putCursorAtEnd = function() {
 
 };
 
-setTimeout(function(){
-
   fontsize();
   boardsize();
 
@@ -208,4 +206,3 @@ setTimeout(function(){
     }
   });
   $('.board').css('opacity', 1);
-},1000);
