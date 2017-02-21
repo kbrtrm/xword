@@ -22,11 +22,11 @@
         <%}%>
       </ul>
       <ul class="navbar-nav">
+        <%if (data.user||user) {%>
         <li class="nav-item">
           <a class="nav-link" href="/logout">Log Out</a>
         </li>
-        <%if (data.user||user) {%>
-        <li id="greeting" class="p-2 nav-link">hello [<%-data.user%>]</li>
+        <li id="greeting" class="p-2 nav-link">hello [<%-data.user||user%>]</li>
         <%}%>
         <%if (!data.user&&user) {%>
         <li id="navElement"><a href="/login">login</a></li>
