@@ -44,6 +44,14 @@ app.use(['/login','/register','/new','/s','/c','/solve'],bodyParser.urlencoded({
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname+'/views'));
 
+app.get('/b/:board', function(req,res) {
+  let board = fetchBoard(req.params.board);
+  board.then(function(data) {
+    data.user=req.session.user;
+    res.render('test',{data:data});
+  });
+});
+
 /* --- AUTHENTICATION: Login & Registration --- */
 function auth(req,res,next) { //req.sessionStore req.sessionID req.session
    req.isAuthenticated() ? next() : res.redirect('/login');

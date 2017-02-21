@@ -1,0 +1,34 @@
+<html>
+<head>
+  <title>SOLVE BOARD</title>
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/clueMaker.css">
+  <script>window.INITIAL_STATE = <%-JSON.stringify(data)%>;</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
+</head>
+<body>
+  <% include ../static/assets/includes/header.ejs %>
+  <div>
+  <div class="container mt-md-5 mt-sm-4 mt-4">
+    <div class="row">
+      <div class="col-md-6">
+        <div id="root"></div>
+      </div>
+
+    <div class="col-md-6">
+        <div id="solveTime"></div>
+        <div id="boardStats"></div>
+        <h2>Across</h2>
+        <ul id="acrossList" class="cluelist"></ul>
+        <h2>Down</h2>
+        <ul id="downList" class="cluelist"></ul>
+    </div>
+  </div>
+</div>
+    <script src="/assets/js/bundle.js"></script>
+    <script src='/assets/js/jquery-3.1.1.slim.min.js'></script>
+    <script src="/assets/js/index.js"></script>
+</body>
+</html>
