@@ -71,23 +71,23 @@
 /***/ (function(module, exports) {
 
 function populateBoardArray(board, wordPosDict) { //returns a board populated with words from wordsPosDict
+  console.log('board',board);
+  console.log('wordposdict',wordPosDict);
   Object.keys(wordPosDict).forEach((key)=>
   {
-    console.log(key);
     let index=codeToArrayIndex(key); //starting array index
-    let x, y, direction;
-    x=index[0];
-    y=index[1];
-    console.log(index);
+    let row, col, direction;
+    row=index[0];
+    col=index[1];
     direction=wordPosDict[key].dir;
     wordPosDict[key].word.split("").forEach((letter, ind)=>{
-    if (direction==='H') { //write to the right hehe
-    //leave row (x) fixed and increment col (y) for each letter
-    board[y][x+ind] = letter.toUpperCase();//md5(letter,secretHashKey);
+    if (direction==='H') { //write to the right
+    //fix ROW and increment COL for each letter
+    board[row][col+ind] = letter.toUpperCase();//md5(letter,secretHashKey);
     }
-    else { //write it down hehe
-      //leave col (y) fixed and increment row (x) for each letter
-      board[y+ind][x] = letter.toUpperCase();//md5(letter,secretHashKey);
+    else { //write downwards
+      //fix COL and increment ROW for each letter
+      board[row+ind][col] = letter.toUpperCase();//md5(letter,secretHashKey);
     }
   });
 });
@@ -99,18 +99,18 @@ function populateIndicesToWordKey(wordPosDict) {
   Object.keys(wordPosDict).forEach((key)=>
   {
     let index=codeToArrayIndex(key); //starting array index
-    let x, y, direction;
-    x=index[0];
-    y=index[1];
+    let row, col, direction;
+    row=index[0];
+    col=index[1];
     direction=wordPosDict[key].dir;
     wordPosDict[key].word.split("").forEach((letter, ind)=>{
-    if (direction==='H') { //write to the right hehe
-    //leave row (x) fixed and increment col (y) for each letter
-    indicesToWordKey[`${y},${x+ind}`]=wordPosDict[key].word;
+    if (direction==='H') { //write to the right
+      //fix ROW and increment COL for each letter
+    indicesToWordKey[`${row},${col+ind}`]=wordPosDict[key].word;
     }
-    else { //write it down hehe
-      //leave col (y) fixed and increment row (x) for each letter
-      indicesToWordKey[`${y+ind},${x}`]=wordPosDict[key].word;
+    else { //write downwards
+      //fix COL and increment ROW for each letter
+      indicesToWordKey[`${row+ind},${col}`]=wordPosDict[key].word;
     }
   });
 });
@@ -156,23 +156,11 @@ function populateClueList(wordPosDict) {
   return true;
 }
 
-//A thru O maps to 0->14 horizontally
-//numbers map to array rows vertically
-//A.charCodeAt()-65 is 0, O.charCodeAt()-65 is 14.
-function letNumToIndex(letNum) { //gives starting index in 2D array to draw word
-  let split = letNum.split("");
-  let letter, number, index;
-  number = letNum.match(/\d/gi).join(""); //return just the numbers e.g., 11A -> returns 11
-  letter = letNum.match(/[A-Z]/gi).join(""); //return just the letter e.g., 11A -> returns 'A'
-  index = [(letter.charCodeAt()-65),number-1]; //convert 'A' to 0
-  return index;
-}
-
 function codeToArrayIndex(code) { //gives starting index in 2D array to draw word
   let split = code.split("-");
   let row=parseInt(split[0])-1; // minus 1 as our array is zero-indexed but our code starts at 1
   let col=parseInt(split[1])-1; // parseInt since the zero padded number will be a string
-  return [col, row];
+  return [row, col];
 }
 
 function populatedCell(letter, x, y, printAnswer=false) {
@@ -212,9 +200,10 @@ function postCompletion(timeSpent, storeTimeData, avgSolveTime, totalSolves, id,
 }); //TODO add catch for error and return values
 }
 
-function compareBoardState(board,boardState) { //stringify the array and compare strings
+function compareBoardState(A,B) { //stringify the array and compare strings
   //TODO I18N?!?
-  return JSON.stringify(board)===JSON.stringify(boardState);
+  if (!(Array.isArray(A)||Array.isArray(B))) { throw new Error('Boards must be of type Array'); }
+  return JSON.stringify(A)===JSON.stringify(B);
 }
 
 function createEmptyBoard(size) {
@@ -227,7 +216,7 @@ function createEmptyBoard(size) {
   return b;
 }
 
-module.exports = {populateBoardArray, populateClueList, renderBoardHTML, postCompletion, compareBoardState, createEmptyBoard, populateIndicesToWordKey};
+module.exports = {populateBoardArray, populateClueList, renderBoardHTML, postCompletion, compareBoardState, createEmptyBoard, populateIndicesToWordKey, codeToArrayIndex};
 
 
 /***/ }),
@@ -340,6 +329,7 @@ var Board = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Board.__proto__ || Object.getPrototypeOf(Board)).call(this, props));
 
     var p = window.INITIAL_STATE;
+    console.log(p);
     _this.state = (_this$state = {
       answer_board: [],
       user_board: [],

@@ -7,6 +7,7 @@ class Board extends React.Component {
   constructor(props) {
     super(props);
     let p=window.INITIAL_STATE;
+    console.log(p);
     this.state = {
       answer_board: [],
       user_board: [],

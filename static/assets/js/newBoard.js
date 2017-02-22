@@ -186,39 +186,41 @@ window.onload = function() {
     return;
   }
 
-  //A thru O maps to 0->14 horizontally
-  //numbers map to array rows vertically
-  //A.charCodeAt()-65 is 0, O.charCodeAt()-65 is 14.
-  function letNumToIndex(letNum) { //gives starting index in 2D array to draw word
-    let split = letNum.split("");
-    let letter, number, index;
-    number = letNum.match(/\d/gi).join(""); //return just the numbers e.g., 11A -> returns 11
-    letter = letNum.match(/[A-Z]/gi).join(""); //return just the letter e.g., 11A -> returns 'A'
-    index = [(letter.charCodeAt()-65),number-1]; //convert 'A' to 0
-    return index;
+  function codeToArrayIndex(code) { //gives starting index in 2D array to draw word
+    let split = code.split("-");
+    let row=parseInt(split[0])-1; // minus 1 as our array is zero-indexed but our code starts at 1
+    let col=parseInt(split[1])-1; // parseInt since the zero padded number will be a string
+    return [row, col];
   }
 
+  function indexToCode(row, col) { //gives starting index in 2D array to draw word
+      let zPadRow, zPadCol;
+      (row<9) ? zPadRow="0"+(row+1) : zPadRow=row+1;
+      (col<9) ? zPadCol="0"+(col+1) : zPadCol=col+1;
+      return `${zPadRow}-${zPadCol}`;
+  }
+  
   function populateBoardArray(board, wordPosDict) { //returns a board populated with words from wordsPosDict
     let clues=document.querySelector('div#clues');
     clues.innerHTML+=`<b>key | clue | direction (H/V) | word | clue code</b><br /><hr />`;
     Object.keys(wordPosDict).forEach((key)=>
     {
-      let index=letNumToIndex(key); //starting array index
-      let x, y, direction;
-      x=index[0];
-      y=index[1];
+      let index=codeToArrayIndex(key); //starting array index
+      let row, col, direction;
+      row=index[0];
+      col=index[1];
       direction=wordPosDict[key].dir;
       clues.innerHTML+=`${key} | ${wordPosDict[key].clue} | ${wordPosDict[key].dir} | ${wordPosDict[key].word} | ${wordPosDict[key].clueCode}<br />`;
     wordPosDict[key].word.split("").forEach((letter, index)=>{
-      if (direction==='H') { //write to the right hehe
-      //leave row (x) fixed and increment col (y) for each letter
-      board[y][x+index] = md5(letter,secretHashKey);
-      indicesToWordKey[`${y},${x+index}`]=wordPosDict[key].word;
+      if (direction==='H') { //write to the right
+      //fix ROW and increment COL for each letter
+      board[row][col+index] = letter.toUpperCase(); //md5(letter,secretHashKey);
+      indicesToWordKey[`${row},${col+index}`]=wordPosDict[key].word;
         }
-      else { //write it down hehe
-        //leave col (y) fixed and increment row (x) for each letter
-        board[y+index][x] = md5(letter,secretHashKey);
-        indicesToWordKey[`${x+index},${y}`]=wordPosDict[key].word;
+      else { //write downwards
+        //fix COL and increment ROW for each letter
+        board[row+index][col] = letter.toUpperCase(); //md5(letter,secretHashKey);
+        indicesToWordKey[`${row+index},${col}`]=wordPosDict[key].word;
         }
       });
     });
@@ -305,13 +307,6 @@ window.onload = function() {
     }
   }
   return alreadyUsed;
-  }
-
-  function indexToCode(row, col) { //gives starting index in 2D array to draw word
-    let zPadRow, zPadCol;
-    (row<9) ? zPadRow="0"+(row+1) : zPadRow=row+1;
-    (col<9) ? zPadCol="0"+(col+1) : zPadCol=col+1;
-    return `${zPadRow}-${zPadCol}`;
   }
 
   function isCellEmpty(cell) {
