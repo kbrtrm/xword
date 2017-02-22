@@ -35,6 +35,7 @@
     "express-session": "^1.15.1",
     "helmet": "^3.4.0",
     "mongodb": "^2.2.22",
+    "mongodb-migrate": "^2.0.1",
     "mongoose": "^4.8.2",
     "node-fetch": "^1.6.3",
     "passport": "^0.3.2",
