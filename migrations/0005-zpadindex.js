@@ -12,19 +12,21 @@ function newKeyFromOld(key, dir) { //turns 1A into 01-01-V or H for dir
 }
 
 exports.up = function(db, next){
-  db.collection('boards').find().forEach((board)=>{
-    let d=board.data[0];
-    let id=board._id;
-    let newObj={};
-    Object.keys(d).forEach((key)=>{
-      let oldValue=d[key];
-      let dir=d[key].dir;
-      let newKey=newKeyFromOld(key, dir);
-      newObj[newKey]=oldValue;
-    });
+  db.collection('boards').find({}, function(err,boards) {
+    boards.forEach((board)=>{
+      let d=board.data;
+      let id=board._id;
+      let newObj={};
+      Object.keys(d).forEach((key)=>{
+        let oldValue=d[key];
+        let dir=d[key].dir;
+        let newKey=newKeyFromOld(key, dir);
+        newObj[newKey]=oldValue;
+      });
     db.collection('boards').update({_id:id}, {$set:{data:newObj} });
   });
   next();
+});
 };
 
 function oldKeyFromNew(key) { // turns 01-01-V into 1A
@@ -36,16 +38,18 @@ function oldKeyFromNew(key) { // turns 01-01-V into 1A
 }
 
 exports.down = function(db, next){
-  db.collection('boards').find().forEach((board)=>{
-    let d=board.data[0];
-    let id=board._id;
-    let newObj={};
-    Object.keys(d).forEach((key)=>{
-      let oldValue=d[key];
-      let newKey=oldKeyFromNew(key);
-      newObj[newKey]=oldValue;
-    });
+  db.collection('boards').find({}, function(err,boards) {
+    boards.forEach((board)=>{
+      let d=board.data;
+      let id=board._id;
+      let newObj={};
+      Object.keys(d).forEach((key)=>{
+        let oldValue=d[key];
+        let newKey=oldKeyFromNew(key);
+        newObj[newKey]=oldValue;
+      });
     db.collection('boards').update({_id:id}, {$set:{data:newObj} });
+    });
   });
   next();
 };
