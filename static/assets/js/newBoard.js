@@ -248,7 +248,7 @@ window.onload = function() {
         currentWord=[];
         if ((right(j)&&!isCellEmpty(testArr[i][j+1]))) {
           //the cell to the right is empty and we're not at the right side of the board
-          currentWordCode=indexToLetNum(i,j);
+          currentWordCode=indexToCode(i,j);
           let ct=j;
           currentWord.push(testArr[i][ct]);
           alreadyUsed[`${i},${ct}`]=wordDirection;
@@ -282,7 +282,7 @@ window.onload = function() {
         currentWord=[];
         if ((up(i)&&isCellEmpty(testArr[i-1][j]))||(!up(i))) { //the cell above us is empty or we're at the top of the board
           //we are at the top of a word, so test if it's vertical or horizontal
-          currentWordCode=indexToLetNum(i,j);
+          currentWordCode=indexToCode(i,j);
           if (down(i)&&!isCellEmpty(testArr[i+1][j])) { //the cell below us is NOT empty, the word is vertical
             let ct=i;
             currentWord.push(testArr[ct][j]);
@@ -306,15 +306,12 @@ window.onload = function() {
   }
   return alreadyUsed;
   }
-  //A thru O maps to 0->14 horizontally
-  //numbers map to array rows vertically
-  //A.charCodeAt()-65 is 0, O.charCodeAt()-65 is 14.
-  function indexToLetNum(row, col) { //gives letter-number code given a row, col index in a 2D array
-    let code,letter,number;
-    number=row+1;
-    letter=String.fromCharCode(col+65); //if col=0, letter is A
-    code = `${number}${letter}`
-    return code;
+
+  function indexToCode(row, col) { //gives starting index in 2D array to draw word
+    let zPadRow, zPadCol;
+    (row<9) ? zPadRow="0"+(row+1) : zPadRow=row+1;
+    (col<9) ? zPadCol="0"+(col+1) : zPadCol=col+1;
+    return `${zPadRow}-${zPadCol}`;
   }
 
   function isCellEmpty(cell) {
