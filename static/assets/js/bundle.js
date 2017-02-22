@@ -71,8 +71,6 @@
 /***/ (function(module, exports) {
 
 function populateBoardArray(board, wordPosDict) { //returns a board populated with words from wordsPosDict
-  console.log('board',board);
-  console.log('wordposdict',wordPosDict);
   Object.keys(wordPosDict).forEach((key)=>
   {
     let index=codeToArrayIndex(key); //starting array index
@@ -107,10 +105,12 @@ function populateIndicesToWordKey(wordPosDict) {
     if (direction==='H') { //write to the right
       //fix ROW and increment COL for each letter
     indicesToWordKey[`${row},${col+ind}`]=wordPosDict[key].word;
+    indicesToWordKey[`${row},${col+ind},H`]=key;
     }
     else { //write downwards
       //fix COL and increment ROW for each letter
       indicesToWordKey[`${row+ind},${col}`]=wordPosDict[key].word;
+      indicesToWordKey[`${row+ind},${col},V`]=key;
     }
   });
 });
@@ -163,21 +163,23 @@ function codeToArrayIndex(code) { //gives starting index in 2D array to draw wor
   return [row, col];
 }
 
-function populatedCell(letter, x, y, printAnswer=false) {
-  return (printAnswer) ? `<div class="cell" data-text="${letter}" data-row="${x}" data-col="${y}"><input type="text" maxLength="1" class="cell--text" value="${letter}"/></div>` :
-  `<div class="cell" data-text="${letter}" data-row="${x}" data-col="${y}"><input type="text" maxLength="1" class="cell--text" /></div>`;
+function populatedCell(letter, x, y, VPK, HPK, printAnswer=false) {
+  return (printAnswer) ? `<div class="cell" data-text="${letter}" data-VPK="${VPK}" data-HPK="${HPK}" data-row="${x}" data-col="${y}"><input type="text" maxLength="1" class="cell--text" value="${letter}"/></div>` :
+  `<div class="cell" data-text="${letter}" data-VPK="${VPK}" data-HPK="${HPK}" data-row="${x}" data-col="${y}"><input type="text" maxLength="1" class="cell--text" /></div>`;
 }
 
-function renderBoardHTML(board, answers=false)
-{
+function renderBoardHTML(board, indicesToWordKey, answers=false)
+{ //x is row, y is column
   let rowHTML='';
   let boardHTML='';
   board.forEach((row, x) => {
     rowHTML='';
     rowHTML+=`<div class="row">`;
     row.forEach((letter, y) => {
-      let blankCell=`<div class="cell cell--filled" data-row="${x}" data-col="${y}"></div>`;
-      (letter==='~') ? rowHTML+=blankCell : rowHTML+=populatedCell(letter,x,y,answers);
+      let VPK=indicesToWordKey[`${x},${y},V`]||''; //we want it to be empty string, not undefined, for unmatched key
+      let HPK=indicesToWordKey[`${x},${y},H`]||'';
+      let blankCell=`<div class="cell cell--filled" data-row="${x}" data-VPK="${VPK}" data-HPK="${HPK}" data-col="${y}"></div>`;
+      (letter==='~') ? rowHTML+=blankCell : rowHTML+=populatedCell(letter,x,y,VPK,HPK,answers);
     });
     rowHTML+=`</div>`;
     boardHTML+=rowHTML;
@@ -428,7 +430,7 @@ var Board = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var board = (0, _board.renderBoardHTML)(this.state.answer_board);
+      var board = (0, _board.renderBoardHTML)(this.state.answer_board, this.state.indicesToWordKey);
       return React.createElement('div', { className: "board board-size-" + this.state.BOARDSIZE, id: 'board',
         dangerouslySetInnerHTML: { __html: board } });
     }

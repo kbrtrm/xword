@@ -96,7 +96,7 @@ class Board extends React.Component {
   }
 
   render() {
-        let board=renderBoardHTML(this.state.answer_board);
+        let board=renderBoardHTML(this.state.answer_board, this.state.indicesToWordKey);
         return (<div className={"board board-size-" + this.state.BOARDSIZE} id="board"
         dangerouslySetInnerHTML={{__html: board}}></div>);
     }
