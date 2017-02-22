@@ -75,12 +75,12 @@ describe("compareBoardState", function() {
       var boardB=Array(2);
       expect(()=>board.compareBoardState(boardA,boardB).to.throw('Boards must be of type Array'));
     });
-    it("returns an error if a either board is null", function() {
+    it("returns an error if either board is null", function() {
       var boardA=null;
       var boardB=Array(2);
       expect(()=>board.compareBoardState(boardA,boardB).to.throw('Boards must be of type Array'));
     });
-    it("returns an error if a either board is null", function() {
+    it("returns an error if either board is null", function() {
       var boardA=Array(2);
       var boardB=null;
       expect(()=>board.compareBoardState(boardA,boardB).to.throw('Boards must be of type Array'));
