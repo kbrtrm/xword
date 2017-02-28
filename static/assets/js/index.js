@@ -188,6 +188,23 @@ jQuery.fn.putCursorAtEnd = function() {
 
 };
 
+$( ".cell--text" )
+  .focus(function () {
+    var curH = $(this).parent().data('hpk');
+    var curV = $(this).parent().data('vpk');
+    console.log(curH);
+    $('.cell--text').parent('.cell[data-hpk='+curH+']').children('.cell--text').css({
+      'background-color': '#d4edf7'
+    });
+    $('.cell--text').parent('.cell[data-vpk='+curV+']').children('.cell--text').css({
+      'background-color': '#eee'
+    });
+  }).blur(function(){
+    $('.cell--text').css({
+      'background-color': '#fff'
+    });
+  });
+
   fontsize();
   boardsize();
 

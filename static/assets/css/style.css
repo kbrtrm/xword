@@ -263,7 +263,7 @@
 .cell input.cell--text:focus {
   box-shadow: 0;
   outline: none;
-  background: skyblue;
+  background: skyblue!important;
 }
 
 .row:first-child .cell--text {
